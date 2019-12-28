@@ -1,0 +1,22 @@
+{
+  "name": "xtransit",
+  "version": "0.0.1",
+  "description": "The agent that can collect or transfer xprofiler's performance logs.",
+  "main": "xtransit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyj1991/xtransit.git"
+  },
+  "keywords": [
+    "xprofiler"
+  ],
+  "author": "yeekwanvong@gmail.com",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/hyj1991/xtransit/issues"
+  },
+  "homepage": "https://github.com/hyj1991/xtransit#readme"
+}
