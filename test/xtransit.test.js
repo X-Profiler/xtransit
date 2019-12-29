@@ -5,6 +5,6 @@ const xtransit = require('../xtransit');
 
 describe('xtransit should run as expected.', function () {
   it('should be ok', function () {
-    expect(xtransit).to.be(null);
+    expect(xtransit).to.be.ok();
   });
 });
