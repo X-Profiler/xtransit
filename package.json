@@ -1,0 +1,48 @@
+{
+  "name": "xtransit",
+  "version": "0.0.1-beta",
+  "description": "The agent that can collect or transfer xprofiler's performance logs.",
+  "main": "xtransit.js",
+  "scripts": {
+    "serve": "nodemon test/transit-server.js",
+    "lint": "eslint --fix xtransit.js \"test/**/*.js\"",
+    "test": "mocha -t 0 -R spec test/*.test.js",
+    "test-single": "mocha -t 0 -R spec",
+    "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -R spec test/*.test.js  --timeout 0",
+    "cov-single": "nyc --reporter=html --reporter=text --reporter=lcov mocha --timeout 0 -R spec",
+    "ci": "npm run lint && npm run cov && codecov",
+    "release": "node scripts/release.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyj1991/xtransit.git"
+  },
+  "files": [
+    "xtransit.js"
+  ],
+  "keywords": [
+    "xprofiler"
+  ],
+  "author": "yeekwanvong@gmail.com",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/hyj1991/xtransit/issues"
+  },
+  "homepage": "https://github.com/hyj1991/xtransit#readme",
+  "dependencies": {
+    "ws": "^7.2.1"
+  },
+  "devDependencies": {
+    "codecov": "^3.6.1",
+    "eslint": "^6.8.0",
+    "expect.js": "^0.3.1",
+    "mocha": "^6.2.2",
+    "nodemon": "^2.0.2",
+    "nyc": "^15.0.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "test/transit-server.js"
+    ]
+  }
+}
