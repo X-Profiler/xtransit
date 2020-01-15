@@ -4,7 +4,7 @@
   "description": "The agent that can collect or transfer xprofiler's performance logs.",
   "main": "xtransit.js",
   "scripts": {
-    "serve": "nodemon test/transit-server.js",
+    "serve": "nodemon test/fixtures/transit-server.js",
     "lint": "eslint --fix xtransit.js \"test/**/*.js\" \"lib/**/*.js\" \"config/**/*.js\"",
     "test": "mocha -t 0 -R spec test/*.test.js",
     "test-single": "mocha -t 0 -R spec",
@@ -43,7 +43,7 @@
   },
   "nodemonConfig": {
     "watch": [
-      "test/transit-server.js"
+      "test/fixtures/transit-server.js"
     ]
   }
 }

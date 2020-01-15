@@ -3,8 +3,9 @@
 const configure = require('./config');
 const XtransitAgent = require('./lib/agent');
 
-async function start() {
-  const config = await configure();
+function start(userConfig) {
+  const defaultConfig = configure();
+  const config = Object.assign({}, defaultConfig, userConfig);
   const xtransitAgent = new XtransitAgent(config);
   xtransitAgent.run();
 }
