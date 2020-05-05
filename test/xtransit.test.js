@@ -62,7 +62,7 @@ describe('running xtransit', function () {
         UNIT_TEST_TRANSIT_CLIENT_RECONNECT_TIME: 1
       })
     });
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 2000));
   });
 
   after(() => {
