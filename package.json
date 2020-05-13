@@ -11,7 +11,8 @@
     "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -R spec test/*.test.js  --timeout 0",
     "cov-single": "nyc --reporter=html --reporter=text --reporter=lcov mocha --timeout 0 -R spec",
     "ci": "npm run lint && npm run cov && codecov",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.js",
+    "autod": "autod"
   },
   "repository": {
     "type": "git",
@@ -30,12 +31,16 @@
   },
   "homepage": "https://github.com/hyj1991/xtransit#readme",
   "dependencies": {
+    "address": "^1.1.2",
     "moment": "^2.24.0",
+    "uuid": "^8.0.0",
     "ws": "^7.2.1"
   },
   "devDependencies": {
+    "autod": "^3.1.0",
     "codecov": "^3.6.1",
     "eslint": "^6.8.0",
+    "eslint-config-egg": "^8.0.1",
     "expect.js": "^0.3.1",
     "mocha": "^6.2.2",
     "nodemon": "^2.0.2",
