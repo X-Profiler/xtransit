@@ -82,6 +82,7 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_APP_SECRET: 'mock',
         UNIT_TEST_TRANSIT_CLIENT_RECONNECT_TIME: 1,
         UNIT_TEST_TRANSIT_HEARTBEAT_INTERVAL: 1,
+        UNIT_TEST_TRANSIT_LOG_LEVEL: 3,
         UNIT_TEST_TRANSIT_CLIENT_RUNNING_TIME: 15000,
       }),
     });

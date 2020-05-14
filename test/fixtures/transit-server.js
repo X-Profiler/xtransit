@@ -23,6 +23,8 @@ wss.on('connection', function connection(ws) {
 
   ws.on('message', message => {
     console.log('received: %s', message);
+    message = JSON.parse(message);
+    ws.send(JSON.stringify({ ok: true, data: { type: message.type } }));
   });
 
   ws.on('close', function close() {

@@ -1,11 +1,11 @@
 {
   "name": "xtransit",
-  "version": "0.0.1-2019.lastcommit",
+  "version": "0.0.2",
   "description": "The agent that can collect or transfer xprofiler's performance logs.",
   "main": "xtransit.js",
   "scripts": {
     "serve": "nodemon test/fixtures/transit-server.js",
-    "lint": "eslint --fix xtransit.js \"test/**/*.js\" \"lib/**/*.js\" \"config/**/*.js\"",
+    "lint": "eslint --fix common config lib scripts test *.js",
     "test": "mocha -t 0 -R spec test/*.test.js",
     "test-single": "mocha -t 0 -R spec",
     "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -R spec test/*.test.js  --timeout 0",
@@ -32,7 +32,7 @@
   "homepage": "https://github.com/hyj1991/xtransit#readme",
   "dependencies": {
     "address": "^1.1.2",
-    "moment": "^2.24.0",
+    "moment": "^2.25.3",
     "uuid": "^8.0.0",
     "ws": "^7.2.1"
   },
