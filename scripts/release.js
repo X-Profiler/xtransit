@@ -21,6 +21,6 @@ run(`git tag ${tagName}`);
 run(`git push -f origin ${tagName}`);
 
 // publish to npm
-run(`npm publish --registry=https://registry.npmjs.org`);
+run('npm publish --registry=https://registry.npmjs.org');
 
 console.log(`\nrelease ${releaseInfo} done.`);

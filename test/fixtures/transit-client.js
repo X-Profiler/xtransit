@@ -8,6 +8,7 @@ xtransit.start({
   appSecret: process.env.UNIT_TEST_TRANSIT_APP_SECRET,
   reconnectBaseTime: process.env.UNIT_TEST_TRANSIT_CLIENT_RECONNECT_TIME,
   heartbeatInterval: process.env.UNIT_TEST_TRANSIT_HEARTBEAT_INTERVAL,
+  logLevel: process.env.UNIT_TEST_TRANSIT_LOG_LEVEL,
 });
 
 // expired time
