@@ -10,7 +10,7 @@ const exists = promisify(fs.exists);
 const utils = require('../common/utils');
 const platform = os.platform();
 
-module.exports = async pid => {
+module.exports = async (pid, stringify = true) => {
   let nodeExe = 'node';
 
   if (!utils.isNumber(pid)) {
@@ -47,7 +47,7 @@ module.exports = async pid => {
     const { stdout } = await exec(`wmic process where "processid=${pid}" get executablepath`);
     let executable = stdout.toString().trim();
     executable = executable.split('\r\r')[1].trim();
-    nodeExe = JSON.stringify(executable);
+    nodeExe = stringify ? JSON.stringify(executable) : executable;
   }
 
   return nodeExe;

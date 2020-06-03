@@ -7,7 +7,8 @@ const { promisify } = require('util');
 const cp = require('child_process');
 const exec = promisify(cp.exec);
 const exists = promisify(fs.exists);
-const { isNumber, checkAlive } = require('../common/utils');
+const readFile = promisify(fs.readFile);
+const { isNumber, checkAlive, sleep } = require('../common/utils');
 const getNodeExe = require('../common/exe');
 const getCwd = require('../common/cwd');
 
@@ -49,8 +50,8 @@ async function checkStatus() {
   await checkInstalled(nodeExe, processCwd);
 
   const hiddenFile = path.join(os.homedir(), '.xprofiler');
-  if (fs.existsSync(hiddenFile)) {
-    const content = fs.readFileSync(hiddenFile, 'utf8').trim();
+  if (await exists(hiddenFile)) {
+    const content = (await readFile(hiddenFile, { encoding: 'utf8' })).trim();
     for (const proc of content.split('\n')) {
       const [xpid, logdir, cwd, , , mod] = proc.split('\u0000');
       if (Number(pid) === Number(xpid)) {
@@ -72,8 +73,14 @@ async function checkStatus() {
         const { ok: ok1, data: data1 } = await require(xctl)(pid, 'check_version');
         if (ok1) {
           const { version } = data1;
+          status.installXprofiler = true;
           status.enableXprofiler = true;
           status.xprofilerVersion = `v${version}`;
+        }
+
+        // sleep for releasing named pipe
+        if (os.platform() === 'win32') {
+          await sleep(200);
         }
 
         // get xprofiler config
@@ -88,4 +95,4 @@ async function checkStatus() {
   console.log(JSON.stringify(status));
 }
 
-checkStatus();
+checkStatus().catch(err => console.error(err.message));

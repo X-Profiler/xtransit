@@ -2,23 +2,29 @@
 
 const results = {};
 const cp = require('child_process');
+const { promisify } = require('util');
+const exec = promisify(cp.exec);
 const os = require('os');
 
-// node version
-results.nodeVersion = process.versions.node;
+async function getOsInfo() {
+  // node version
+  results.nodeVersion = process.versions.node;
 
-// xtransit version
-results.xtransitVersion = require('../package.json').version;
+  // xtransit version
+  results.xtransitVersion = require('../package.json').version;
 
-// ulimic -c
-if (os.platform() === 'win32') {
-  results.ulimitC = 'unlimited';
-} else {
-  const ulimic = cp.execSync('ulimit -c');
-  results.ulimit = ulimic.toString().trim();
+  // ulimic -c
+  if (os.platform() === 'win32') {
+    results.ulimit = 'unlimited';
+  } else {
+    const { stdout } = await exec('ulimit -c', { encoding: 'utf8' });
+    results.ulimit = stdout.trim();
+  }
+
+  // os info
+  results.osInfo = `${os.type()}/${os.hostname()}/${os.platform()}/${os.arch()}/${os.release()}`;
+
+  console.log(JSON.stringify(results));
 }
 
-// os info
-results.osInfo = `${os.type()}/${os.hostname()}/${os.platform()}/${os.arch()}/${os.release()}`;
-
-console.log(JSON.stringify(results));
+getOsInfo().catch(err => console.error(err.message));

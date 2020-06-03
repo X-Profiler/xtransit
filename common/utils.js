@@ -12,7 +12,10 @@ exports.random = function(max, min = 0) {
   return Number(parseFloat(Math.random() * (max - min) + min).toFixed(2));
 };
 
-exports.getAgentId = function() {
+exports.getAgentId = function(ipMode) {
+  if (!ipMode) {
+    return `${os.hostname()}`;
+  }
   return `${address.ip()}::${os.hostname()}`;
 };
 
@@ -29,6 +32,14 @@ exports.md5 = function(str) {
 
 exports.isNumber = function(num) {
   return num !== true && num !== false && Boolean(num === 0 || (num && !isNaN(num)));
+};
+
+exports.isBoolean = function(bool) {
+  return bool === true || bool === false;
+};
+
+exports.isFunction = function(func) {
+  return typeof func === 'function';
 };
 
 exports.checkAlive = function(pid) {
@@ -63,4 +74,8 @@ exports.getNodeProcessInfo = function(proc, platform) {
   }
 
   return result;
+};
+
+exports.sleep = function(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
 };
