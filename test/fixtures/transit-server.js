@@ -1,5 +1,6 @@
 'use strict';
 
+const { v4 } = require('uuid');
 const WebSocket = require('ws');
 
 function send(msg) {
@@ -22,9 +23,16 @@ wss.on('connection', function connection(ws) {
   send({ ok: true, type: 'new_client_count', data: { clientCount } });
 
   ws.on('message', message => {
-    console.log('received: %s', message);
     message = JSON.parse(message);
     ws.send(JSON.stringify({ ok: true, data: { type: message.type } }));
+
+    setTimeout(() => {
+      ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes' } }));
+    }, 200);
+
+    setTimeout(() => {
+      ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes1' } }));
+    }, 300);
   });
 
   ws.on('close', function close() {
@@ -34,15 +42,19 @@ wss.on('connection', function connection(ws) {
   // ws.send('something');
 });
 
+function close() {
+  process.exit(0);
+}
+
 // expired time
 const runningTime = process.env.UNIT_TEST_TRANSIT_SERVER_RUNNING_TIME;
 if (runningTime && !isNaN(runningTime)) {
-  setTimeout(() => process.exit(0), runningTime);
+  setTimeout(close, runningTime);
 }
 
 // wait for close
 process.on('message', msg => {
   if (msg === 'close') {
-    process.exit(0);
+    close();
   }
 });

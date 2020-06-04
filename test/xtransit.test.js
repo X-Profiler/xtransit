@@ -4,6 +4,7 @@ const cp = require('child_process');
 const path = require('path');
 const expect = require('expect.js');
 const xtransit = require('../xtransit');
+const { sleep } = require('../common/utils');
 const transitServer = path.join(__dirname, 'fixtures/transit-server.js');
 const transitClient = path.join(__dirname, 'fixtures/transit-client.js');
 
@@ -82,17 +83,18 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_APP_SECRET: 'mock',
         UNIT_TEST_TRANSIT_CLIENT_RECONNECT_TIME: 1,
         UNIT_TEST_TRANSIT_HEARTBEAT_INTERVAL: 1,
-        UNIT_TEST_TRANSIT_LOG_LEVEL: 3,
+        UNIT_TEST_TRANSIT_LOG_LEVEL: 2,
         UNIT_TEST_TRANSIT_CLIENT_RUNNING_TIME: 15000,
+        UNIT_TEST_TRANSIT_LOG_INTERVAL: 1,
       }),
     });
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await sleep(5000);
   });
 
   after(() => {
-    xserver.send('close');
+    xserver.channel && xserver.send('close');
     xserver = null;
-    xclient.send('close');
+    xclient.channel && xclient.send('close');
     xclient = null;
   });
 
@@ -102,9 +104,9 @@ describe('running xtransit', function() {
 
   it('should reconnected as expected.', async function() {
     xserver.send('close');
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await sleep(3000);
     await startServer();
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await sleep(1500);
     expect(clientCount).to.be(1);
   });
 
@@ -117,7 +119,7 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_CLIENT_RUNNING_TIME: 15000,
       }),
     });
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await sleep(500);
     expect(clientCount).to.be(1);
     xclient2.send('close');
   });

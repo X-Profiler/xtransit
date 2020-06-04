@@ -1,9 +1,13 @@
 'use strict';
 
+const os = require('os');
+
 module.exports = () => {
   const config = {};
 
-  config.server = 'ws://127.0.0.1:8080';
+  config.logdir = os.tmpdir();
+
+  config.logLevel = process.env.XTRANSIT_DEBUG === 'YES' ? 3 : 2;
 
   return config;
 };

@@ -12,7 +12,10 @@ exports.random = function(max, min = 0) {
   return Number(parseFloat(Math.random() * (max - min) + min).toFixed(2));
 };
 
-exports.getAgentId = function() {
+exports.getAgentId = function(ipMode) {
+  if (!ipMode) {
+    return `${os.hostname()}`;
+  }
   return `${address.ip()}::${os.hostname()}`;
 };
 
@@ -31,6 +34,14 @@ exports.isNumber = function(num) {
   return num !== true && num !== false && Boolean(num === 0 || (num && !isNaN(num)));
 };
 
+exports.isBoolean = function(bool) {
+  return bool === true || bool === false;
+};
+
+exports.isFunction = function(func) {
+  return typeof func === 'function';
+};
+
 exports.checkAlive = function(pid) {
   try {
     return process.kill(pid, 0);
@@ -43,6 +54,8 @@ exports.getNodeProcessInfo = function(proc, platform) {
   const result = {};
 
   let processRegexp;
+
+  /* istanbul ignore next */
   if (platform === 'win32') {
     processRegexp = /^(.*) (\d+)$/;
   } else {
@@ -54,6 +67,7 @@ exports.getNodeProcessInfo = function(proc, platform) {
     return result;
   }
 
+  /* istanbul ignore next */
   if (platform === 'win32') {
     result.pid = parts[2];
     result.command = parts[1];
@@ -63,4 +77,8 @@ exports.getNodeProcessInfo = function(proc, platform) {
   }
 
   return result;
+};
+
+exports.sleep = function(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
 };
