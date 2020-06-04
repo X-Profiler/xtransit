@@ -75,6 +75,7 @@ class Parser {
         this.list = [];
       };
 
+      /* istanbul ignore next */
       const onError = err => {
         cleanup();
         reject(err);

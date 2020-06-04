@@ -68,6 +68,7 @@ function readFileAsStream(filepath, start) {
 
     readable.on('data', data => (start += data.length));
 
+    /* istanbul ignore next */
     readable.on('error', err => {
       reject(err);
       readable.destroy();
@@ -138,4 +139,4 @@ exports.init = async function() {
   }
 };
 
-exports.interval = 60;
+exports.interval = process.env.UNIT_TEST_TRANSIT_LOG_INTERVAL || 60;

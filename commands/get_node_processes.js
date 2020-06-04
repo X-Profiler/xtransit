@@ -17,6 +17,8 @@ async function getNodeProcesses() {
   ];
 
   let cmd = '';
+
+  /* istanbul ignore next */
   if (platform === 'win32') {
     cmd = 'wmic process get processid,commandline| findstr /C:"node.exe" /C:"pm2" /C:"iojs"';
   } else {
@@ -41,5 +43,6 @@ async function getNodeProcesses() {
   console.log(result);
 }
 
+/* istanbul ignore next */
 getNodeProcesses().catch(err => console.error(err.message));
 

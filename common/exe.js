@@ -17,6 +17,7 @@ module.exports = async (pid, stringify = true) => {
     return nodeExe;
   }
 
+  /* istanbul ignore next */
   if (platform === 'darwin') {
     try {
       const { stdout } = await exec(`lsof -a -d txt -p ${pid}| grep node`);
@@ -36,6 +37,7 @@ module.exports = async (pid, stringify = true) => {
     }
   }
 
+  /* istanbul ignore next */
   if (platform === 'linux') {
     const exePath = `/proc/${pid}/exe`;
     if (await exists(exePath)) {
@@ -43,6 +45,7 @@ module.exports = async (pid, stringify = true) => {
     }
   }
 
+  /* istanbul ignore next */
   if (platform === 'win32') {
     const { stdout } = await exec(`wmic process where "processid=${pid}" get executablepath`);
     let executable = stdout.toString().trim();

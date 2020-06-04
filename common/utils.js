@@ -54,6 +54,8 @@ exports.getNodeProcessInfo = function(proc, platform) {
   const result = {};
 
   let processRegexp;
+
+  /* istanbul ignore next */
   if (platform === 'win32') {
     processRegexp = /^(.*) (\d+)$/;
   } else {
@@ -65,6 +67,7 @@ exports.getNodeProcessInfo = function(proc, platform) {
     return result;
   }
 
+  /* istanbul ignore next */
   if (platform === 'win32') {
     result.pid = parts[2];
     result.command = parts[1];

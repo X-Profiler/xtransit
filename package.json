@@ -1,6 +1,6 @@
 {
   "name": "xtransit",
-  "version": "0.1.6-beta",
+  "version": "0.1.7-beta",
   "description": "The agent that can collect or transfer xprofiler's performance logs.",
   "main": "xtransit.js",
   "bin": {
