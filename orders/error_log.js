@@ -3,6 +3,7 @@
 const fs = require('fs');
 const { promisify } = require('util');
 const stat = promisify(fs.stat);
+const exists = promisify(fs.exists);
 const Parser = require('../common/error');
 
 const MAX_ERROR_COUNT = 50;
@@ -54,10 +55,12 @@ async function getAdditionalLogs(errorLog) {
   }
 }
 
-function readLogs(errors) {
+async function readLogs(errors) {
   const tasks = [];
   for (const errorLog of errors) {
-    tasks.push(getAdditionalLogs(errorLog));
+    if (await exists(errorLog)) {
+      tasks.push(getAdditionalLogs(errorLog));
+    }
   }
   return Promise.all(tasks);
 }
@@ -84,7 +87,9 @@ exports.init = async function() {
   const errors = this.errors;
   for (const errorLog of errors) {
     parsers.set(errorLog, new Parser(this.errexp, MAX_ERROR_COUNT));
-    map.set(errorLog, (await stat(errorLog)).size);
+    if (await exists(errorLog)) {
+      map.set(errorLog, (await stat(errorLog)).size);
+    }
   }
 };
 

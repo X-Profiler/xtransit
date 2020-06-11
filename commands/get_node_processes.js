@@ -14,6 +14,8 @@ async function getNodeProcesses() {
     'get_node_processes',
     'get_os_info',
     'which node',
+    'wmic process',
+    'findstr ',
   ];
 
   let cmd = '';
