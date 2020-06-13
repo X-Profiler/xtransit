@@ -86,14 +86,20 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_LOG_LEVEL: 2,
         UNIT_TEST_TRANSIT_CLIENT_RUNNING_TIME: 15000,
         UNIT_TEST_TRANSIT_LOG_INTERVAL: 1,
+        UNIT_TEST_TRANSIT_IP_MODE: 'YES',
+        UNIT_TEST_TRANSIT_LIB_MODE: 'YES',
+        UNIT_TEST_TRANSIT_ERRORS: 'YES',
+        UNIT_TEST_TRANSIT_PACKAGES: 'YES',
+        UNIT_TEST: 'YES',
       }),
     });
     await sleep(5000);
   });
 
-  after(() => {
-    xserver.channel && xserver.send('close');
+  after(async () => {
+    xserver.channel && xserver.send('shutdown');
     xserver = null;
+    await sleep(2000);
     xclient.channel && xclient.send('close');
     xclient = null;
   });
@@ -118,6 +124,8 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_APP_SECRET: 'mock',
         UNIT_TEST_TRANSIT_CLIENT_RUNNING_TIME: 15000,
         XTRANSIT_DEBUG: 'YES',
+        UNIT_TEST_TRANSIT_DOCKER: 'YES',
+        UNIT_TEST: 'YES',
       }),
     });
     await sleep(500);
