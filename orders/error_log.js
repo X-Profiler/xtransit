@@ -94,3 +94,5 @@ exports.init = async function() {
 };
 
 exports.interval = process.env.UNIT_TEST_TRANSIT_LOG_INTERVAL || 60;
+
+exports.MAX_ERROR_COUNT = MAX_ERROR_COUNT;

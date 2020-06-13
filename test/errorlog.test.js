@@ -13,6 +13,8 @@ const errorLogLib = require('../orders/error_log');
 const baseContext = require('./fixtures/context');
 const { getErrorText, setErrorText } = baseContext;
 
+const { MAX_ERROR_COUNT } = errorLogLib;
+
 describe('get error logs', function() {
   const errors = [];
   const context = Object.assign({}, baseContext, { errors });
@@ -110,8 +112,8 @@ describe('get error logs', function() {
   });
 
   it('should get get empty error when errexp not matched', async function() {
-    await writeFile(errorFile, 'mock error\n', { flag: 'a' });
-    await writeFile(errorFile, 'mock error\n', { flag: 'a' });
+    await writeFile(errorFile, 'mock error\n\n', { flag: 'a' });
+    await writeFile(errorFile, 'mock error\nat aaaa\n', { flag: 'a' });
     await writeFile(errorFile, 'mock error\n', { flag: 'a' });
     const message = await errorLogLib.call(context);
     expect(message.type).to.be('error_log');
@@ -120,8 +122,8 @@ describe('get error logs', function() {
   });
 
   it('should get get errors when errexp matched', async function() {
-    await writeFile(errorFile, '[2020-06-03 22:30:41,912] mock error1\n', { flag: 'a' });
-    await writeFile(errorFile, '[2020-06-03 22:30:41,912] mock error2\n', { flag: 'a' });
+    await writeFile(errorFile, '[2020-06-03 22:30:41,912] TestError error1\n\n', { flag: 'a' });
+    await writeFile(errorFile, '[2020-06-03 22:30:41,912] mock error2\nat bbbb\n', { flag: 'a' });
     await writeFile(errorFile, '[2020-06-03 22:30:41,912] mock error3\n', { flag: 'a' });
     const message = await errorLogLib.call(context);
     expect(message.type).to.be('error_log');
@@ -131,11 +133,22 @@ describe('get error logs', function() {
 
   it('should get get errors when error file reseted', async function() {
     await writeFile(errorFile, '[2020-06-05 22:30:41,912] mock error4\n');
+    await writeFile(errorFile, 'mock child\n');
     await writeFile(errorFile, '[2020-06-05 22:30:41,912] mock error5\n', { flag: 'a' });
     await writeFile(errorFile, '[2020-06-05 22:30:41,912] mock error6\n', { flag: 'a' });
     const message = await errorLogLib.call(context);
     expect(message.type).to.be('error_log');
     expect(Object.keys(message.data).length).to.be(1);
-    expect(Object.keys(message.data[errorFile]).length).to.be(3);
+    expect(Object.keys(message.data[errorFile]).length).to.be(2);
+  });
+
+  it('should limit error logs', async function() {
+    for (let i = 0; i < MAX_ERROR_COUNT + 10; i++) {
+      await writeFile(errorFile, `[2020-06-05 22:30:41,912] mock error::${i}\n`, { flag: 'a' });
+    }
+    const message = await errorLogLib.call(context);
+    expect(message.type).to.be('error_log');
+    expect(Object.keys(message.data).length).to.be(1);
+    expect(Object.keys(message.data[errorFile]).length).to.be(MAX_ERROR_COUNT);
   });
 });
