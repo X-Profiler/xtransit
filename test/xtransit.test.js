@@ -117,6 +117,7 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_APP_ID: 1,
         UNIT_TEST_TRANSIT_APP_SECRET: 'mock',
         UNIT_TEST_TRANSIT_CLIENT_RUNNING_TIME: 15000,
+        XTRANSIT_DEBUG: 'YES',
       }),
     });
     await sleep(500);

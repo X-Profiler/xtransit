@@ -35,5 +35,6 @@ module.exports = {
   ],
   semver: [
     'eslint@6',
+    'mocha@7'
   ]
 };

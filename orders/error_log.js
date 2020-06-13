@@ -39,7 +39,7 @@ async function getAdditionalLogs(errorLog) {
       throw new Error(`${errorLog} is not a file`);
     }
 
-    let start = map.get(errorLog) || 0;
+    let start = map.get(errorLog) || /* istanbul ignore next */ 0;
     if (stats.size === start) {
       return [];
     }
@@ -94,3 +94,5 @@ exports.init = async function() {
 };
 
 exports.interval = process.env.UNIT_TEST_TRANSIT_LOG_INTERVAL || 60;
+
+exports.MAX_ERROR_COUNT = MAX_ERROR_COUNT;

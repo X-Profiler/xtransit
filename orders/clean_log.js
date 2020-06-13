@@ -60,6 +60,7 @@ async function cleanLogs(logdir) {
 
   await pMap(cleanFiles, async fileName => {
     const filePath = path.join(logdir, fileName);
+    /* istanbul ignore next */
     if (!await exists(filePath)) {
       return;
     }
@@ -77,3 +78,9 @@ exports.init = async function() {
 };
 
 exports.interval = 24 * 60 * 60;
+
+exports.KEEP_DAYS = KEEP_DAYS;
+exports.INFO_PATT = INFO_PATT;
+exports.ERROR_PATT = ERROR_PATT;
+exports.DEBUG_PATT = DEBUG_PATT;
+exports.SOCKET_PATT = SOCKET_PATT;
