@@ -16,33 +16,51 @@ const wss = new WebSocket.Server({ port }, () => {
 });
 
 let clientCount = 0;
+let globalWs;
+let onceSend = false;
 
 wss.on('connection', function connection(ws) {
   console.log('new clinet connected');
   clientCount++;
   send({ ok: true, type: 'new_client_count', data: { clientCount } });
 
+  globalWs = ws;
+
   ws.on('message', message => {
     message = JSON.parse(message);
     ws.send(JSON.stringify({ ok: true, data: { type: message.type } }));
 
-    setTimeout(() => {
-      ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes' } }));
-    }, 200);
+    if (!onceSend) {
+      onceSend = true;
+      setTimeout(() => {
+        ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes', expiredTime: 15000 } }));
+      }, 200);
 
-    setTimeout(() => {
-      ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes1' } }));
-    }, 300);
+      setTimeout(() => {
+        ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes' } }));
+      }, 300);
+
+      setTimeout(() => {
+        ws.send(JSON.stringify({ traceId: v4(), type: 'exec_command', data: { command: 'get_node_processes1' } }));
+      }, 400);
+    }
   });
 
   ws.on('close', function close() {
     console.log('client disconnected');
   });
 
-  // ws.send('something');
 });
 
-function close() {
+function shutdown() {
+  globalWs && globalWs.send(JSON.stringify({ traceId: v4(), type: 'shutdown' }));
+}
+
+function close(delay) {
+  if (delay) {
+    setTimeout(() => process.exit(0), 1000);
+    return;
+  }
   process.exit(0);
 }
 
@@ -56,5 +74,10 @@ if (runningTime && !isNaN(runningTime)) {
 process.on('message', msg => {
   if (msg === 'close') {
     close();
+  }
+
+  if (msg === 'shutdown') {
+    shutdown();
+    close(true);
   }
 });

@@ -13,6 +13,7 @@ const platform = os.platform();
 module.exports = async (pid, stringify = true) => {
   let nodeExe = 'node';
 
+  /* istanbul ignore next */
   if (!utils.isNumber(pid)) {
     return nodeExe;
   }

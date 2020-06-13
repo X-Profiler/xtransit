@@ -63,6 +63,7 @@ exports.getNodeProcessInfo = function(proc, platform) {
   }
 
   const parts = processRegexp.exec(proc.trim());
+  /* istanbul ignore if */
   if (!parts) {
     return result;
   }

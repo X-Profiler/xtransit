@@ -32,8 +32,11 @@ xtransit.start({
   reconnectBaseTime: process.env.UNIT_TEST_TRANSIT_CLIENT_RECONNECT_TIME,
   heartbeatInterval: process.env.UNIT_TEST_TRANSIT_HEARTBEAT_INTERVAL,
   logLevel: process.env.UNIT_TEST_TRANSIT_LOG_LEVEL,
-  errors: [errorLogPath],
-  packages: [packagePath],
+  docker: process.env.UNIT_TEST_TRANSIT_IP_MODE === 'YES' ? true : undefined,
+  ipMode: process.env.UNIT_TEST_TRANSIT_IP_MODE === 'YES' ? true : undefined,
+  libMode: process.env.UNIT_TEST_TRANSIT_LIB_MODE === 'YES' ? true : undefined,
+  errors: process.env.UNIT_TEST_TRANSIT_ERRORS ? [errorLogPath] : undefined,
+  packages: process.env.UNIT_TEST_TRANSIT_PACKAGES ? [packagePath] : undefined,
   logdir: xprofilerLogDir,
 });
 
