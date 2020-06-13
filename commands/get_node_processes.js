@@ -34,10 +34,12 @@ async function getNodeProcesses() {
     .filter(line => ignores.every(ignore => typeof line === 'string' && !line.includes(ignore)))
     .map(line => {
       const { pid, command } = getNodeProcessInfo(line, platform);
+      let info;
+      /* istanbul ignore else */
       if (isNumber(pid) && checkAlive(pid) && command) {
-        return [pid.trim(), command.trim()].join('\u0000');
+        info = [pid.trim(), command.trim()].join('\u0000');
       }
-      return false;
+      return info;
     })
     .filter(item => item)
     .join('\n');

@@ -33,6 +33,26 @@ describe('get error logs', function() {
 });
 
 describe('get error logs', function() {
+  const errorFile = path.join(__dirname, 'fixtures/errorlog2');
+  const errors = [errorFile];
+
+  const context = Object.assign({}, baseContext, { errors });
+  before(async function() {
+    await errorLogLib.init.call(context);
+  });
+
+  after(async function() {
+    setErrorText('');
+  });
+
+  it('should get empty errors', async function() {
+    const message = await errorLogLib.call(context);
+    expect(message.type).to.be('error_log');
+    expect(Object.keys(message.data).length).to.be(0);
+  });
+});
+
+describe('get error logs', function() {
   const errorFile = path.join(__dirname, 'fixtures/errorlog1');
   const errors = [errorFile];
 

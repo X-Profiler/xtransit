@@ -39,7 +39,7 @@ async function getAdditionalLogs(errorLog) {
       throw new Error(`${errorLog} is not a file`);
     }
 
-    let start = map.get(errorLog) || 0;
+    let start = map.get(errorLog) || /* istanbul ignore next */ 0;
     if (stats.size === start) {
       return [];
     }
