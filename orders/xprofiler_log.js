@@ -57,6 +57,7 @@ function readFileAsStream(filepath, start) {
     const readable = fs.createReadStream(filepath, { start });
 
     readable.pipe(split()).pipe(through((line, _, next) => {
+      /* istanbul ignore else */
       if (line.length) {
         buffered.push(line);
         if (buffered.length > MAX_LOG_LINES) {
@@ -88,17 +89,17 @@ async function getAdditionalLogs(filepath) {
     }
 
     const stats = await stat(filepath);
-    if (!stats.isFile(filepath)) {
+    if (!stats.isFile()) {
       return null;
     }
 
-    const start = map.get(filepath) || 0;
+    const start = map.get(filepath) || /* istanbul ignore next */ 0;
     if (stats.size === start) {
       return null;
     }
 
     return await readFileAsStream(filepath, start);
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     logger.error(`getAdditionalLogs failed: ${err.stack}`);
     return null;
   }
@@ -108,6 +109,7 @@ function readLogs(logdir) {
   const currentPath = getCurrentXprofilerLog(logdir);
   const lastPath = map.get(FILE_RECORD_KEY);
   const tasks = [];
+  /* istanbul ignore if */
   if (currentPath !== lastPath) {
     map.set(FILE_RECORD_KEY, currentPath);
     tasks.push(getAdditionalLogs(lastPath));
@@ -124,6 +126,7 @@ exports = module.exports = async function() {
   const message = {
     type: 'xprofiler_log',
     data: formatLogs(logs),
+    lines: process.env.UNIT_TEST && logs[0] ? logs[0].split('\n').length : 0,
   };
   return message;
 };
@@ -140,3 +143,5 @@ exports.init = async function() {
 };
 
 exports.interval = process.env.UNIT_TEST_TRANSIT_LOG_INTERVAL || 60;
+
+exports.MAX_LOG_LINES = MAX_LOG_LINES;

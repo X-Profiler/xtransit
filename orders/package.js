@@ -20,12 +20,13 @@ async function readPackage(pkgfile) {
 
     // lock file
     const lockfile = path.join(path.dirname(pkgfile), 'package-lock.json');
+    /* istanbul ignore else */
     if (await exists(lockfile)) {
       data.lock = (await readFile(lockfile, 'utf8')).trim();
     }
 
     return data;
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     logger.error(`readPackage failed: ${err.stack}`);
     return {};
   }

@@ -1,0 +1,69 @@
+{
+  "name": "xtransit",
+  "version": "1.0.0",
+  "description": "The agent that can collect or transfer xprofiler's performance logs.",
+  "main": "xtransit.js",
+  "bin": {
+    "xtransit": "bin/xtransit.js"
+  },
+  "scripts": {
+    "serve": "nodemon test/fixtures/transit-server.js",
+    "lint": "eslint --fix bin commands common config lib orders scripts test *.js",
+    "test": "mocha -t 0 -R spec test/*.test.js",
+    "test-single": "mocha -t 0 -R spec",
+    "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -R spec test/*.test.js  --timeout 0",
+    "cov-single": "nyc --reporter=html --reporter=text --reporter=lcov mocha --timeout 0 -R spec",
+    "ci": "npm run lint && npm run cov && codecov",
+    "release": "node scripts/release.js",
+    "autod": "autod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/X-Profiler/xtransit.git"
+  },
+  "files": [
+    "bin",
+    "commands",
+    "common",
+    "config",
+    "lib",
+    "orders",
+    "xtransit.js"
+  ],
+  "keywords": [
+    "xprofiler"
+  ],
+  "author": "yeekwanvong@gmail.com",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/X-Profiler/xtransit/issues"
+  },
+  "homepage": "https://github.com/X-Profiler/xtransit#readme",
+  "dependencies": {
+    "address": "^1.1.2",
+    "formstream": "^1.1.0",
+    "moment": "^2.26.0",
+    "nounou": "^1.2.1",
+    "p-map": "^4.0.0",
+    "split2": "^3.1.1",
+    "through2": "^3.0.1",
+    "urllib": "^2.35.0",
+    "uuid": "^8.1.0",
+    "ws": "^7.3.0"
+  },
+  "devDependencies": {
+    "autod": "^3.1.0",
+    "codecov": "^3.7.0",
+    "eslint": "^6.8.0",
+    "eslint-config-egg": "^8.0.1",
+    "expect.js": "^0.3.1",
+    "mocha": "^7.2.0",
+    "nodemon": "^2.0.4",
+    "nyc": "^15.1.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "test/fixtures/transit-server.js"
+    ]
+  }
+}
