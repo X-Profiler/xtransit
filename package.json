@@ -8,7 +8,7 @@
   },
   "scripts": {
     "serve": "nodemon test/fixtures/transit-server.js",
-    "lint": "eslint --fix bin commands common config lib orders scripts test *.js",
+    "lint": "eslint --fix .",
     "test": "mocha -t 0 -R spec test/*.test.js",
     "test-single": "mocha -t 0 -R spec",
     "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -R spec test/*.test.js  --timeout 0",
