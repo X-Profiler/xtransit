@@ -15,9 +15,12 @@ const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
 
+let logger;
+
 // system
-const isLinux = os.type() === 'Linux';
+const isLinux = os.platform() === 'linux';
 const isWindows = os.platform() === 'win32';
+const isMacOS = os.platform() === 'darwin';
 let cgroupBaseDir = '/sys/fs/cgroup';
 let clkTck = 100;
 
@@ -341,6 +344,77 @@ async function linuxFreeMemroy() {
   return os.freemem();
 }
 
+/*
+ Mach Virtual Memory Statistics: (page size of 4096 bytes)
+ Pages free:                               17763.
+ Pages active:                            766990.
+ Pages inactive:                          760126.
+ Pages speculative:                         6119.
+ Pages throttled:                              0.
+ Pages wired down:                       2202907.
+*/
+async function osxFreeMemory() {
+  const mappings = {
+    'Pages purgeable': 'purgeable',
+    'Pages wired down': 'wired',
+    'Pages active': 'active',
+    'Pages inactive': 'inactive',
+    'Pages occupied by compressor': 'compressed',
+  };
+
+  let [{ stdout: vmStat }, { stdout: pagePageable }] =
+    await Promise.all([
+      exec('vm_stat'),
+      exec('sysctl vm.page_pageable_internal_count'),
+    ]);
+  vmStat = vmStat.toString().trim();
+  pagePageable = pagePageable.toString().trim();
+
+  // get page size
+  let pageSize = 4096;
+  const matchdPageSize = /page size of (\d+) bytes/.exec(vmStat);
+  if (matchdPageSize && isNumber(matchdPageSize[1])) {
+    pageSize = Number(matchdPageSize[1]);
+  }
+
+  // get page pageable
+  let [, pageableValue] = pagePageable.split(':');
+  if (!isNumber(pageableValue)) {
+    return os.freemem();
+  }
+  pageableValue = Number(pageableValue) * pageSize;
+
+  // get vm stats
+  const lines = vmStat
+    .split('\n')
+    .filter(x => x !== '');
+
+  const stats = {};
+  lines.forEach(x => {
+    const parts = x.split(':');
+    const key = parts[0];
+    const val = parts[1].replace('.', '').trim();
+
+    if (mappings[key]) {
+      const ky = mappings[key];
+      stats[ky] = val * pageSize;
+    }
+  });
+
+  // get app memory
+  const appMemory = pageableValue - stats.purgeable;
+
+  // get wired memory
+  const wiredMemory = stats.wired;
+
+  // get compressed memory
+  const compressedMemory = stats.compressed;
+
+  logger.debug(`[system_log] page_size: ${pageSize}, wired: ${wiredMemory}, app: ${appMemory}, compressed: ${compressedMemory}`);
+  const used = appMemory + wiredMemory + compressedMemory;
+  return totalMemory - used;
+}
+
 async function getFreeMemory() {
   let free;
   if (isDocker) {
@@ -352,6 +426,8 @@ async function getFreeMemory() {
     }
   } else if (isLinux) {
     free = await linuxFreeMemroy();
+  } else if (isMacOS) {
+    free = await osxFreeMemory();
   } else {
     free = os.freemem();
   }
@@ -452,6 +528,8 @@ exports = module.exports = async function() {
 };
 
 exports.init = async function() {
+  logger = this.logger;
+
   // init clk tck
   await initClkTck();
 
