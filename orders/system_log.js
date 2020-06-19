@@ -458,7 +458,7 @@ async function getDiskUsage(disks) {
   // '/dev/sda3         80448976 67999076   8340248      90% /home/admin/'
   const params = disks.length ? disks.join(' ') : '';
 
-  const { stdout } = await exec(`df -P${params}`);
+  const { stdout } = await exec(`df -P ${params}`);
   const metric = {};
   const results = stdout.trim();
   const lines = results.split('\n');
