@@ -456,9 +456,18 @@ async function getDiskUsage(disks) {
   }
   // '/dev/sda6         14674404 13161932    744012      95% /'
   // '/dev/sda3         80448976 67999076   8340248      90% /home/admin/'
-  const params = disks.length ? disks.join(' ') : '';
+  const existsDisks = [];
+  for (const disk of disks) {
+    if (!await exists(disk)) {
+      continue;
+    }
+    existsDisks.push(disk);
+  }
+  const params = existsDisks.length ? ` ${existsDisks.join(' ')}` : '';
+  const command = `df -P${params}`;
 
-  const { stdout } = await exec(`df -P${params}`);
+  logger.debug(`[system_log] get disks info: ${command}`);
+  const { stdout } = await exec(command);
   const metric = {};
   const results = stdout.trim();
   const lines = results.split('\n');
