@@ -22,7 +22,7 @@ async function getNodeProcesses() {
 
   /* istanbul ignore next */
   if (platform === 'win32') {
-    cmd = 'wmic process get processid,commandline| findstr /C:"node.exe" /C:"pm2" /C:"iojs"';
+    cmd = 'wmic process get processid,commandline| findstr /C:"node.exe" /C:"pm2" /C:"iojs" /C:"node "';
   } else {
     cmd = 'ps -e -o pid,args | grep -E "node |iojs |PM2 " | grep -v grep';
   }
