@@ -3,6 +3,7 @@
 const os = require('os');
 const address = require('address');
 const crypto = require('crypto');
+const { promisify } = require('util');
 
 exports.regularWsServer = function(server) {
   return server.startsWith('ws://') || server.startsWith('wss://');
@@ -80,6 +81,4 @@ exports.getNodeProcessInfo = function(proc, platform) {
   return result;
 };
 
-exports.sleep = function(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-};
+exports.sleep = promisify(setTimeout);
