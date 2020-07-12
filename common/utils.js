@@ -3,7 +3,7 @@
 const os = require('os');
 const address = require('address');
 const crypto = require('crypto');
-const { promisify } = require('util')
+const { promisify } = require('util');
 
 exports.regularWsServer = function(server) {
   return server.startsWith('ws://') || server.startsWith('wss://');
