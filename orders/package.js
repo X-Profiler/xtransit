@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
+const { yarnToNpm } = require('synp');
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 
@@ -18,11 +19,16 @@ async function readPackage(pkgfile) {
     data.name = pkgfile;
     data.pkg = (await readFile(pkgfile, 'utf8')).trim();
 
+    const projectDir = path.dirname(pkgfile);
+
     // lock file
-    const lockfile = path.join(path.dirname(pkgfile), 'package-lock.json');
+    const lockfile = path.join(projectDir, 'package-lock.json');
     /* istanbul ignore else */
     if (await exists(lockfile)) {
       data.lock = (await readFile(lockfile, 'utf8')).trim();
+    }
+    else if (await exists(path.join(projectDir, 'yarn.lock'))) {
+      data.lock = yarnToNpm(projectDir).trim();
     }
 
     return data;
