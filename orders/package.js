@@ -26,8 +26,7 @@ async function readPackage(pkgfile) {
     /* istanbul ignore else */
     if (await exists(lockfile)) {
       data.lock = (await readFile(lockfile, 'utf8')).trim();
-    }
-    else if (await exists(path.join(projectDir, 'yarn.lock'))) {
+    } else if (await exists(path.join(projectDir, 'yarn.lock'))) {
       data.lock = yarnToNpm(projectDir).trim();
     }
 
