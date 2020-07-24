@@ -39,6 +39,8 @@ describe('get config', function() {
     expect(agent.errors.length).to.be(0);
     expect(Array.isArray(agent.packages)).to.be(true);
     expect(agent.packages.length).to.be(0);
+    expect(Array.isArray(agent.titles)).to.be(true);
+    expect(agent.titles.length).to.be(0);
   });
 
   it('shoule merge user config', function() {
@@ -53,6 +55,7 @@ describe('get config', function() {
     const disks = ['/', '/', '/test'];
     const errors = ['/error.log', '/error.log', '/error.log'];
     const packages = ['/package.json', '/package.json', '/package.json'];
+    const titles = ['mock-node'];
     const agent = new Agent({
       server: 'ws://127.0.0.1',
       appId: 1,
@@ -68,6 +71,7 @@ describe('get config', function() {
       disks,
       errors,
       packages,
+      titles,
     });
     expect(agent.logdir).to.be(logdir);
     expect(agent.logLevel).to.be(logLevel);
@@ -83,6 +87,8 @@ describe('get config', function() {
     expect(agent.errors.length).to.be(Array.from(new Set(errors)).length);
     expect(Array.isArray(agent.packages)).to.be(true);
     expect(agent.packages.length).to.be(Array.from(new Set(packages)).length);
+    expect(Array.isArray(agent.titles)).to.be(true);
+    expect(agent.titles.length).to.be(Array.from(new Set(titles)).length);
   });
 
   it('should config logDir', function() {
