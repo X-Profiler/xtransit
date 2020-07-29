@@ -42,19 +42,19 @@
   "dependencies": {
     "address": "^1.1.2",
     "formstream": "^1.1.0",
-    "moment": "^2.26.0",
+    "moment": "^2.27.0",
     "nounou": "^1.2.1",
     "p-map": "^4.0.0",
     "split2": "^3.1.1",
     "synp": "^1.7.1",
-    "through2": "^3.0.1",
+    "through2": "^4.0.2",
     "urllib": "^2.36.1",
-    "uuid": "^8.1.0",
-    "ws": "^7.3.0"
+    "uuid": "^8.3.0",
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "autod": "^3.1.0",
-    "codecov": "^3.7.0",
+    "codecov": "^3.7.2",
     "eslint": "^6.8.0",
     "eslint-config-egg": "^8.0.1",
     "expect.js": "^0.3.1",
