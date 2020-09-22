@@ -490,10 +490,10 @@ async function getDiskUsage(disks) {
   return metric;
 }
 
-async function getNodeCount() {
+async function getNodeCount(commandPath) {
   const nodeExe = await getNodeExe(process.pid);
-  const file = path.join(__dirname, '../commands/get_node_processes.js');
-  const cmd = `${nodeExe} ${file}`;
+  const file = commandPath || path.join(__dirname, '../commands/get_node_processes.js');
+  const cmd = `${nodeExe} ${JSON.stringify(file)}`;
   const { stdout } = await exec(cmd, { encoding: 'utf8', stdio: 'ignore' });
   return stdout
     .split('\n')
@@ -556,3 +556,5 @@ exports.init = async function() {
 };
 
 exports.interval = 60;
+
+exports.getNodeCount = getNodeCount;
