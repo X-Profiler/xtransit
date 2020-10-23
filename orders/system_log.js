@@ -5,7 +5,6 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
-// const moment = require('moment');
 const { isNumber } = require('../common/utils');
 const getNodeExe = require('../common/exe');
 const pkg = require('../package.json');
@@ -230,7 +229,6 @@ async function getAllUsedCpuFromProc() {
 
 async function dockerCpuUsage() {
   const used = await getAllUsedCpuFromProc();
-  // const sys = new Date().getTime();
   const sys = Date.now();
   const diff_used = (used - last_used) * (1000 / clkTck);
   const diff_sys = sys - last_sys;
@@ -507,7 +505,6 @@ exports = module.exports = async function() {
     cpu_count: cpuNumber,
     total_memory: totalMemory,
     uptime: os.uptime(),
-    // log_time: moment().format('YYYY-MM-DD HH:mm:ss'),
     log_time: Date.now(),
     version: pkg.version,
   };
