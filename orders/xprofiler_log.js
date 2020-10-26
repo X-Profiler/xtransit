@@ -21,7 +21,7 @@ const reg = /([^\s]*): (\d+(\.\d{0,2})?)/g;
 
 function formatLogs(logs) {
   let matched;
-  const data = { logs: [], xprofiler_version: '', log_time: moment().format('YYYY-MM-DD HH:mm:ss') };
+  const data = { logs: [], xprofiler_version: '', log_time: Date.now()};
   for (const log of logs) {
     while ((matched = patt.exec(log)) !== null) {
       const [, , level, type, pid, version, detail] = matched;
