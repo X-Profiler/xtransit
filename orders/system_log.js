@@ -5,6 +5,7 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const cp = require('child_process');
+const moment = require('moment');
 const { isNumber } = require('../common/utils');
 const getNodeExe = require('../common/exe');
 const pkg = require('../package.json');
@@ -505,7 +506,8 @@ exports = module.exports = async function() {
     cpu_count: cpuNumber,
     total_memory: totalMemory,
     uptime: os.uptime(),
-    log_time: Date.now(),
+    log_time: moment().format('YYYY-MM-DD HH:mm:ss'),
+    log_timestamp: Date.now(),
     version: pkg.version,
   };
   const message = { type: 'system_log', data };
