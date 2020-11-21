@@ -464,7 +464,7 @@ async function getDiskUsage(disks) {
     existsDisks.push(disk);
   }
   const params = existsDisks.length ? ` ${existsDisks.join(' ')}` : '';
-  const command = `df ${params}`;
+  const command = `df -P${params}`;
 
   logger.debug(`[system_log] get disks info: ${command}`);
   const { stdout } = await exec(command);
