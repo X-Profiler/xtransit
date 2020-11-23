@@ -23,7 +23,7 @@ describe('get node count correct', function() {
     let count,
       err;
     try {
-      count = await getNodeCount(path.join(__dirname, 'fixtures/with space/get_node_processes.js'));
+      count = await getNodeCount([], path.join(__dirname, 'fixtures/with space/get_node_processes.js'));
     } catch (e) {
       err = e;
     }

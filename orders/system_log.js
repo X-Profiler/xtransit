@@ -490,11 +490,17 @@ async function getDiskUsage(disks) {
   return metric;
 }
 
-async function getNodeCount(commandPath) {
+async function getNodeCount(titles = [], commandPath) {
   const nodeExe = await getNodeExe(process.pid);
   const file = commandPath || path.join(__dirname, '../commands/get_node_processes.js');
   const cmd = `${nodeExe} ${JSON.stringify(file)}`;
-  const { stdout } = await exec(cmd, { encoding: 'utf8', stdio: 'ignore' });
+  const { stdout } = await exec(cmd, {
+    encoding: 'utf8',
+    stdio: 'ignore',
+    env: Object.assign({
+      XTRANSIT_TITLES: JSON.stringify(titles),
+    }, process.env),
+  });
   return stdout
     .split('\n')
     .filter(proc => proc)
@@ -517,7 +523,7 @@ exports = module.exports = async function() {
   tasks.push(getFreeMemory());
   tasks.push(getLoadAvg());
   tasks.push(getDiskUsage(this.disks));
-  tasks.push(getNodeCount());
+  tasks.push(getNodeCount(this.titles));
 
   const [
     used_cpu,
