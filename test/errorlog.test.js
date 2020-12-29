@@ -15,6 +15,18 @@ const { getErrorText, setErrorText } = baseContext;
 
 const { MAX_ERROR_COUNT } = errorLogLib;
 
+describe('find error files with given filter', function() {
+  const errors = [
+    path.join(__dirname, 'fixtures/files/error-*.txt'),
+  ];
+  const context = Object.assign({}, baseContext, { errors });
+  it('should get two files', async function() {
+    await errorLogLib.init.call(context);
+    const message = await errorLogLib.call(context);
+    expect(Object.keys(message.data).length).to.be(2);
+  });
+});
+
 describe('get error logs', function() {
   const errors = [];
   const context = Object.assign({}, baseContext, { errors });

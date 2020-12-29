@@ -1,9 +1,11 @@
 'use strict';
 
 const fs = require('fs');
+const glob = require('glob');
 const { promisify } = require('util');
 const stat = promisify(fs.stat);
 const exists = promisify(fs.exists);
+const globPromise = promisify(glob);
 const Parser = require('../common/error');
 
 const MAX_ERROR_COUNT = 50;
@@ -85,10 +87,16 @@ exports = module.exports = async function() {
 exports.init = async function() {
   logger = this.logger;
   const errors = this.errors;
+  this.errors = [];
+
   for (const errorLog of errors) {
-    parsers.set(errorLog, new Parser(this.errexp, MAX_ERROR_COUNT));
-    if (await exists(errorLog)) {
-      map.set(errorLog, (await stat(errorLog)).size);
+    const files = await globPromise(errorLog);
+    for (const file of files) {
+      this.errors.push(file);
+      parsers.set(file, new Parser(this.errexp, MAX_ERROR_COUNT));
+      if (await exists(file)) {
+        map.set(file, (await stat(file)).size);
+      }
     }
   }
 };
