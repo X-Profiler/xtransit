@@ -308,9 +308,24 @@ async function getCpuUsage() {
 
 async function dockerFreeMemory() {
   const mem_used_path = path.join(cgroupBaseDir, '/memory/memory.usage_in_bytes');
-  const data = await readFile(mem_used_path, 'utf8');
-  const used = Number(data.trim());
-  return totalMemory - used;
+  const mem_stat_path = path.join(cgroupBaseDir, '/memory/memory.stat');
+
+  const mem_used = await readFile(mem_used_path, 'utf8');
+  const mem_stat = await readFile(mem_stat_path, 'utf8');
+
+  // convert memory.stat file content to object
+  //  total_inactive_file 1122323
+  //  total_active_file 12323
+  // => 
+  //  {total_inactive_file: 1122323, total_active_file: 12323  }
+  const mem_stat_obj = mem_stat.trim().split('\n').map(v => v.split(' '))
+    .reduce((r, v) => {r[v[0]] = v[1]; return r;}, {});
+
+  const used_size = Number(mem_used.trim());
+  const total_active_file_size = Number(mem_stat_obj.total_active_file.trim());
+  const total_inactive_file_size = Number(mem_stat_obj.total_inactive_file.trim());
+  	
+  return totalMemory - used_size + (total_active_file_size + total_inactive_file_size);
 }
 
 /*
