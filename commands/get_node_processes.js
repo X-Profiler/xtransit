@@ -14,7 +14,7 @@ let greps = settedGreps;
 if (platform === 'win32') {
   greps = greps.concat(['node.exe', 'PM2', 'iojs', 'node ']);
 } else {
-  greps = greps.concat(['node ', 'iojs ', 'PM2 ']);
+  greps = greps.concat(['node ', 'iojs ', 'PM2 ', 'TSW']);
 }
 
 async function getNodeProcesses() {
