@@ -9,11 +9,13 @@ const urllib = require('urllib');
 const { promisify } = require('util');
 const exists = promisify(fs.exists);
 const stat = promisify(fs.stat);
+const unlink = promisify(fs.unlink);
 const gzip = zlib.createGzip();
 const utils = require('../common/utils');
 
 const [fileId, fileType, filePath, server, token] = process.argv.slice(2);
 const agentId = process.env.XTRANSIT_AGENT_ID;
+const cleanAfterUpload = process.env.XTRANSIT_CLEAN_AFTER_UPLOAD;
 
 console.warn = function() { };
 
@@ -50,6 +52,14 @@ function request(url, opts) {
   });
 }
 
+async function removeExists(files) {
+  try {
+    await Promise.all(files.map(file => unlink(file)));
+  } catch (err) {
+    err;
+  }
+}
+
 async function uploadFile() {
   if (!utils.isNumber(fileId) || !fileType || !filePath || !server || !token) {
     throw new Error('wrong args: node upload_file.js fileId fileType filePath server token');
@@ -84,6 +94,9 @@ async function uploadFile() {
   };
 
   const result = await request(url, opts);
+  if (result.storage && cleanAfterUpload === 'YES') {
+    await removeExists([filePath, gzippedFile]);
+  }
   console.log(JSON.stringify(result));
 }
 
