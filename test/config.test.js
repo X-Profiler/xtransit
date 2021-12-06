@@ -33,6 +33,7 @@ describe('get config', function() {
     expect(agent.docker).to.be(false);
     expect(agent.ipMode).to.be(false);
     expect(agent.libMode).to.be(false);
+    expect(agent.cleanAfterUpload).to.be(false);
     expect(Array.isArray(agent.disks)).to.be(true);
     expect(agent.disks.length).to.be(0);
     expect(Array.isArray(agent.errors)).to.be(true);
@@ -52,6 +53,7 @@ describe('get config', function() {
     const docker = true;
     const ipMode = true;
     const libMode = true;
+    const cleanAfterUpload = true;
     const disks = ['/', '/', '/test'];
     const errors = ['/error.log', '/error.log', '/error.log'];
     const packages = ['/package.json', '/package.json', '/package.json'];
@@ -68,6 +70,7 @@ describe('get config', function() {
       docker,
       ipMode,
       libMode,
+      cleanAfterUpload,
       disks,
       errors,
       packages,
@@ -81,6 +84,7 @@ describe('get config', function() {
     expect(agent.docker).to.be(docker);
     expect(agent.ipMode).to.be(ipMode);
     expect(agent.libMode).to.be(libMode);
+    expect(agent.cleanAfterUpload).to.be(cleanAfterUpload);
     expect(Array.isArray(agent.disks)).to.be(true);
     expect(agent.disks.length).to.be(Array.from(new Set(disks)).length);
     expect(Array.isArray(agent.errors)).to.be(true);

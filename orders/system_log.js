@@ -316,15 +316,15 @@ async function dockerFreeMemory() {
   // convert memory.stat file content to object
   //  total_inactive_file 1122323
   //  total_active_file 12323
-  // => 
+  // =>
   //  {total_inactive_file: 1122323, total_active_file: 12323  }
   const mem_stat_obj = mem_stat.trim().split('\n').map(v => v.split(' '))
-    .reduce((r, v) => {r[v[0]] = v[1]; return r;}, {});
+    .reduce((r, v) => { r[v[0]] = v[1]; return r; }, {});
 
   const used_size = Number(mem_used.trim());
   const total_active_file_size = Number(mem_stat_obj.total_active_file.trim());
   const total_inactive_file_size = Number(mem_stat_obj.total_inactive_file.trim());
-  	
+
   return totalMemory - used_size + (total_active_file_size + total_inactive_file_size);
 }
 
@@ -438,6 +438,8 @@ async function getFreeMemory() {
     } catch (err) {
       err;
       free = await linuxFreeMemroy();
+    } finally {
+      free = os.freemem();
     }
   } else if (isLinux) {
     free = await linuxFreeMemroy();
