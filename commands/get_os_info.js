@@ -10,6 +10,9 @@ async function getOsInfo() {
   // node version
   results.nodeVersion = process.versions.node;
 
+  // alinode version
+  results.alinodeVersion = process.versions.alinode;
+
   // xtransit version
   results.xtransitVersion = require('../package.json').version;
 
