@@ -439,7 +439,7 @@ async function getFreeMemory() {
       err;
       free = await linuxFreeMemroy();
     } finally {
-      free = os.freemem();
+      free = free || os.freemem();
     }
   } else if (isLinux) {
     free = await linuxFreeMemroy();

@@ -45,6 +45,7 @@ async function checkInstalled(nodeExe, cwd) {
 async function checkStatus() {
   const nodeExe = await getNodeExe(pid);
   status.nodeVersion = await execute(`${nodeExe} -v`);
+  status.alinodeVersion = await execute(`${nodeExe} -V`);
 
   const processCwd = await getCwd(pid);
   await checkInstalled(nodeExe, processCwd);

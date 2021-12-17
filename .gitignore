@@ -108,3 +108,5 @@ package-lock.json
 demo.js
 
 !test/fixtures/files/package-lock.json
+
+local-test
