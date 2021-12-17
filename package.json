@@ -41,7 +41,7 @@
   "homepage": "https://github.com/X-Profiler/xtransit#readme",
   "dependencies": {
     "address": "^1.1.2",
-    "formstream": "^1.1.0",
+    "form-data": "^4.0.0",
     "moment": "^2.28.0",
     "nounou": "^1.2.1",
     "p-map": "^4.0.0",

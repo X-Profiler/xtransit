@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const zlib = require('zlib');
 const qs = require('querystring');
-const formstream = require('formstream');
+const FormData = require('form-data');
 const urllib = require('urllib');
 const { promisify } = require('util');
 const exists = promisify(fs.exists);
@@ -60,11 +60,7 @@ async function removeExists(files) {
   }
 }
 
-async function uploadFile() {
-  if (!utils.isNumber(fileId) || !fileType || !filePath || !server || !token) {
-    throw new Error('wrong args: node upload_file.js fileId fileType filePath server token');
-  }
-
+async function checkFile(filePath) {
   if (!await exists(filePath)) {
     throw new Error(`file ${filePath} not exists`);
   }
@@ -72,12 +68,32 @@ async function uploadFile() {
   if (!(await stat(filePath)).size) {
     throw new Error(`file ${filePath} is empty`);
   }
+}
+
+async function uploadFile() {
+  if (!utils.isNumber(fileId) || !fileType || !filePath || !server || !token) {
+    throw new Error('wrong args: node upload_file.js fileId fileType filePath server token');
+  }
+
+  let files = [];
+  if (fileType === 'core') {
+    // core_path::node_executable_path
+    files = filePath.split('::');
+  } else {
+    files = [filePath];
+  }
+
+  const removeFiles = [files[0]];
 
   // create form
-  const gzippedFile = await gzipFile(filePath);
-  const form = formstream();
-  const size = (await stat(gzippedFile)).size;
-  form.file('file', gzippedFile, gzippedFile, size);
+  const formdata = new FormData();
+  for (const filePath of files) {
+    await checkFile(filePath);
+    const gzippedFile = await gzipFile(filePath);
+    formdata.append(path.basename(filePath), fs.createReadStream(gzippedFile));
+
+    removeFiles.push(gzippedFile);
+  }
 
   // create url
   const nonce = '' + (1 + parseInt((Math.random() * 100000000000), 10));
@@ -89,13 +105,14 @@ async function uploadFile() {
     dataType: 'json',
     type: 'POST',
     timeout: process.env.XTRANSIT_EXPIRED_TIME || 20 * 60 * 1000,
-    headers: form.headers(),
-    stream: form,
+    headers: formdata.getHeaders(),
+    stream: formdata,
   };
 
   const result = await request(url, opts);
   if (result.storage && cleanAfterUpload === 'YES') {
-    await removeExists([filePath, gzippedFile]);
+    await removeExists(removeFiles);
+    result.removeFiles = removeFiles;
   }
   console.log(JSON.stringify(result));
 }
