@@ -10,7 +10,6 @@ const { promisify } = require('util');
 const exists = promisify(fs.exists);
 const stat = promisify(fs.stat);
 const unlink = promisify(fs.unlink);
-const gzip = zlib.createGzip();
 const utils = require('../common/utils');
 
 const [fileId, fileType, filePath, server, token] = process.argv.slice(2);
@@ -24,6 +23,7 @@ async function gzipFile(filePath) {
   if (await exists(gzippedFile)) {
     return gzippedFile;
   }
+  const gzip = zlib.createGzip();
   const gzipFileStream = fs.createWriteStream(gzippedFile);
   return new Promise((resolve, reject) => {
     fs.createReadStream(filePath)
