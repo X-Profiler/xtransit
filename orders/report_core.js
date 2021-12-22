@@ -123,7 +123,7 @@ async function findCoreFile(coredir) {
 
 async function findCoreFiles() {
   const tasks = coredirs.map(coredir => findCoreFile(coredir));
-  const nodeExe = await realpath(await getNodeExe(process.pid));
+  const nodeExe = await realpath(await getNodeExe(process.pid, false));
   const fileList = await Promise.all(tasks);
 
   // get corefiles
