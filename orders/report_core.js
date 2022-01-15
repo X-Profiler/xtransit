@@ -36,7 +36,7 @@ async function getNodePwd(pid) {
       const { stdout } = await exec(`cat /proc/${pid}/environ`);
       pwd = stdout.trim()
         .split('\u0000')
-        .map(env => env.includes('PWD') && env.split('=')[1])
+        .map(env => env.startsWith('PWD=') && env.split('=')[1])
         .filter(pwd => pwd);
       pwd = pwd[0];
     }
@@ -94,6 +94,9 @@ async function findCoreFile(coredir) {
   const corefiles = [];
 
   try {
+    if (!await exists(coredir)) {
+      return corefiles;
+    }
     const files = await readdir(coredir);
     for (const file of files) {
       if (coreprefix.every(prefix => !file.startsWith(prefix) || file.endsWith('.gz'))) {
