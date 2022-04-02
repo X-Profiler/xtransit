@@ -46,6 +46,7 @@ describe('running xtransit', function() {
   let xclient = null;
   // data
   let clientCount = null;
+  let clientReconnectCount = null;
 
   async function startServer() {
     xserver = cp.fork(transitServer, {
@@ -65,7 +66,7 @@ describe('running xtransit', function() {
             clientCount = data.clientCount;
             break;
           default:
-            console.log(`unknown ${type}: ${JSON.stringify(data)}`);
+            console.log(`[server] unknown ${type}: ${JSON.stringify(data)}`);
         }
       }
     }));
@@ -93,6 +94,19 @@ describe('running xtransit', function() {
         UNIT_TEST: 'YES',
       }),
     });
+
+    // handle client message
+    xclient.on('message', msg => {
+      const { type, data } = msg;
+      switch (type) {
+        case 'client_reconnect_count':
+          clientReconnectCount = data.clientReconnectCount;
+          break;
+        default:
+          console.log(`[client] unknown ${type}: ${JSON.stringify(data)}`);
+      }
+    });
+
     await sleep(5000);
   });
 
@@ -113,7 +127,9 @@ describe('running xtransit', function() {
     await sleep(3000);
     await startServer();
     await sleep(1500);
+    console.log(`[xtransit.test.js] clientCount: ${clientCount}, clientReconnectCount: ${clientReconnectCount}`);
     expect(clientCount).to.be(1);
+    expect(clientReconnectCount).to.be.ok();
   });
 
   it('should connect failed with wss', async function() {
