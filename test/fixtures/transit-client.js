@@ -25,6 +25,14 @@ if (!fs.existsSync(xprofilerLogPath)) {
 }
 setTimeout(() => fs.writeFileSync(xprofilerLogPath, fs.readFileSync(xprofilerLogContent)), 3000);
 
+let clientReconnectCount = 0;
+
+function send(msg) {
+  if (typeof process.send === 'function') {
+    process.send(msg);
+  }
+}
+
 xtransit.start({
   server: process.env.UNIT_TEST_TRANSIT_CLIENT_SERVER,
   appId: process.env.UNIT_TEST_TRANSIT_APP_ID,
@@ -38,6 +46,12 @@ xtransit.start({
   errors: process.env.UNIT_TEST_TRANSIT_ERRORS ? [errorLogPath] : undefined,
   packages: process.env.UNIT_TEST_TRANSIT_PACKAGES ? [packagePath] : undefined,
   logdir: xprofilerLogDir,
+  lookup: async server => {
+    clientReconnectCount++;
+    send({ ok: true, type: 'client_reconnect_count', data: { clientReconnectCount } });
+    console.log('[transit-client] wait for server lookup...');
+    return await new Promise(resolve => setTimeout(() => resolve(server), 10));
+  },
 });
 
 function close() {
