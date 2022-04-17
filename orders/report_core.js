@@ -52,7 +52,7 @@ async function getNodePwd(pid) {
       pwd = null;
     }
   } catch (err) {
-    logger.error(`getNodePwd failed: ${err}`);
+    logger.warn(`getNodePwd failed: ${err}`);
   }
 
   return pwd;
