@@ -5,6 +5,7 @@ const path = require('path');
 const expect = require('expect.js');
 const xtransit = require('../xtransit');
 const { sleep } = require('../common/utils');
+const assert = require('assert');
 const transitServer = path.join(__dirname, 'fixtures/transit-server.js');
 const transitClient = path.join(__dirname, 'fixtures/transit-client.js');
 
@@ -47,6 +48,8 @@ describe('running xtransit', function() {
   // data
   let clientCount = null;
   let clientReconnectCount = null;
+  // command test
+  const commands = {};
 
   async function startServer() {
     xserver = cp.fork(transitServer, {
@@ -60,10 +63,13 @@ describe('running xtransit', function() {
       if (msg === 'opened') {
         resolve();
       } else {
-        const { type, data } = msg;
+        const { type, data, expect, command } = msg;
         switch (type) {
           case 'new_client_count':
             clientCount = data.clientCount;
+            break;
+          case 'command_test':
+            commands[data.traceId] = { data: Object.assign({ command }, data.data), expect };
             break;
           default:
             console.log(`[server] unknown ${type}: ${JSON.stringify(data)}`);
@@ -91,6 +97,7 @@ describe('running xtransit', function() {
         UNIT_TEST_TRANSIT_LIB_MODE: 'YES',
         UNIT_TEST_TRANSIT_ERRORS: 'YES',
         UNIT_TEST_TRANSIT_PACKAGES: 'YES',
+        UNIT_TEST_TRANSIT_COMMANDS: 'YES',
         UNIT_TEST: 'YES',
       }),
     });
@@ -147,5 +154,20 @@ describe('running xtransit', function() {
     await sleep(500);
     expect(clientCount).to.be(1);
     xclient2.send('close');
+  });
+
+  it('command execute as expected', async function() {
+    for (const [, { data, expect }] of Object.entries(commands)) {
+      assert(data.ok === expect.ok);
+      if (!data.ok) {
+        console.log(`[xtransit.test.js] command execute: <${data.message}> expect: <${expect.message}>`);
+        assert(data.message.includes(expect.message));
+      }
+
+      if (data.ok) {
+        console.log(`[xtransit.test.js] command [${data.command}] override: ${expect.override}, stdout: <${data.data.stdout}>`);
+        expect.override === false && assert(!data.data.stdout.includes(`my ${data.command}.js`));
+      }
+    }
   });
 });

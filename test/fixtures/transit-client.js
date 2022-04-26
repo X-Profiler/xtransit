@@ -25,6 +25,12 @@ if (!fs.existsSync(xprofilerLogPath)) {
 }
 setTimeout(() => fs.writeFileSync(xprofilerLogPath, fs.readFileSync(xprofilerLogContent)), 3000);
 
+// commands
+const commands = [
+  path.join(__dirname, 'commands'),
+];
+
+
 let clientReconnectCount = 0;
 
 function send(msg) {
@@ -45,6 +51,7 @@ xtransit.start({
   libMode: process.env.UNIT_TEST_TRANSIT_LIB_MODE === 'YES' ? true : undefined,
   errors: process.env.UNIT_TEST_TRANSIT_ERRORS ? [errorLogPath] : undefined,
   packages: process.env.UNIT_TEST_TRANSIT_PACKAGES ? [packagePath] : undefined,
+  commands: process.env.UNIT_TEST_TRANSIT_COMMANDS ? commands : undefined,
   logdir: xprofilerLogDir,
   lookup: async server => {
     clientReconnectCount++;
