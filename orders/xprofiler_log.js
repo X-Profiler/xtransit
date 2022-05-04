@@ -16,7 +16,7 @@ const PERFORMANCE_LOG_TYPE = ['cpu', 'memory', 'gc', 'uv', 'http'];
 
 let logger;
 
-const patt = /\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[(.+)\] \[(.+)\] \[(\d+)\] \[(\d{1,3}\.\d{1,3}\.\d{1,3}.*)\] (.*)/g;
+const patt = /\[\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\] \[(.+)\] \[(.+)\] \[(\d+)\] \[(\d+)\] \[(\d{1,3}\.\d{1,3}\.\d{1,3}[a-zA-Z0-9\-_]*)\] (.*)/g;
 const reg = /([^\s]*): (\d+(\.\d{0,2})?)/g;
 
 function formatLogs(logs) {
@@ -24,11 +24,11 @@ function formatLogs(logs) {
   const data = { logs: [], xprofiler_version: '', log_time: moment().format('YYYY-MM-DD HH:mm:ss'), log_timestamp: Date.now() };
   for (const log of logs) {
     while ((matched = patt.exec(log)) !== null) {
-      const [, , level, type, pid, version, detail] = matched;
+      const [, level, component, pid, tid, version, detail] = matched;
       if (level !== 'info') {
         continue;
       }
-      if (!PERFORMANCE_LOG_TYPE.includes(type)) {
+      if (!PERFORMANCE_LOG_TYPE.includes(component)) {
         continue;
       }
       // data.log_time = time;
@@ -38,6 +38,7 @@ function formatLogs(logs) {
         const [, key, value] = pair;
         data.logs.push({
           pid: Number(pid),
+          tid: Number(tid),
           key,
           value: parseFloat(value),
         });

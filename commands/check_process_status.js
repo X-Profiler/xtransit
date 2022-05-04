@@ -12,7 +12,7 @@ const { isNumber, checkAlive, sleep } = require('../common/utils');
 const getNodeExe = require('../common/exe');
 const getCwd = require('../common/cwd');
 
-const pid = process.argv[2];
+const [pid, tid = 0] = process.argv.slice(2);
 if (!isNumber(pid) || !checkAlive(pid)) {
   console.error(`process ${pid} not exists!`);
   return;
@@ -71,7 +71,7 @@ async function checkStatus() {
         status.xprofilerLogdir = path.resolve(logdir);
 
         // get version
-        const { ok: ok1, data: data1 } = await require(xctl)(pid, 'check_version');
+        const { ok: ok1, data: data1 } = await require(xctl)(pid, tid, 'check_version');
         if (ok1) {
           const { version } = data1;
           status.installXprofiler = true;
@@ -85,7 +85,7 @@ async function checkStatus() {
         }
 
         // get xprofiler config
-        const { ok: ok2, data: data2 } = await require(xctl)(pid, 'get_config');
+        const { ok: ok2, data: data2 } = await require(xctl)(pid, tid, 'get_config');
         if (ok2) {
           status.xprofilerConfig = data2;
         }
