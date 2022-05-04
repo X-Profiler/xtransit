@@ -7,7 +7,13 @@ const { promisify } = require('util');
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 
-const [pid, command, options] = process.argv.slice(2);
+const args = process.argv.slice(2);
+let pid, tid = 0, command, options;
+if (args.length === 4) {
+  [pid, tid, command, options] = args;
+} else {
+  [pid, command, options] = args;
+}
 
 async function takeAction() {
   const hiddenFile = path.join(os.homedir(), '.xprofiler');
@@ -31,7 +37,7 @@ async function takeAction() {
       break;
     }
 
-    const { ok, data, message } = await require(xctl)(pid, command, JSON.parse(options));
+    const { ok, data, message } = await require(xctl)(pid, tid, command, JSON.parse(options));
     if (!ok) {
       result = false;
       console.error(message);
