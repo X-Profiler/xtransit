@@ -6,6 +6,8 @@ const path = require('path');
 const { promisify } = require('util');
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
+const realpath = promisify(fs.realpath);
+const getNodeExe = require('../common/exe');
 
 const args = process.argv.slice(2);
 let pid, tid = 0, command, options;
@@ -45,6 +47,16 @@ async function takeAction() {
     }
 
     result = true;
+
+    // hanle coredump
+    if (command === 'generate_coredump') {
+      data.type = 'core';
+      const nodepath = await realpath(await getNodeExe(process.pid, false));
+      data.executable_path = nodepath;
+      data.node_version = process.versions.node;
+      data.alinode_version = process.versions.alinode;
+    }
+
     console.log(JSON.stringify(data));
   }
 
