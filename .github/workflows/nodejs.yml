@@ -26,5 +26,10 @@ jobs:
     - name: Install Dependencies
       run: npm i -g npminstall && npminstall
 
-    - name: Continuous integration
+    - name: Continuous integration on win32
+      run: npm run test
+      if: ${{ matrix.os == 'windows-latest' }}
+
+    - name: Continuous integration on linux & darwin
       run: npm run ci
+      if: ${{ matrix.os != 'windows-latest' }}
