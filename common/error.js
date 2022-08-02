@@ -35,6 +35,8 @@ class Parser {
   }
 
   parse(line) {
+    const lineMax = 10 * 1024;
+    line = line.length > lineMax ? line.slice(0, lineMax) : line;
     if (line.match(this.errexp)) { // error start
       this.pushLog();
       this.current = { stack: '', type: '', extra: '' };

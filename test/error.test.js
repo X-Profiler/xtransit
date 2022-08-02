@@ -35,6 +35,6 @@ describe('parse error logs', function() {
 
   it('should have 9 error logs', function() {
     expect(logs.length).to.be.ok();
-    expect(logs.length).to.be(9);
+    expect(logs.length).to.be(12);
   });
 });
