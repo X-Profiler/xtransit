@@ -1,6 +1,11 @@
 export as namespace xtransit;
 
 export interface XtransitConfig = {
+  // I. 必须的配置（一定要写）
+  server: `ws://127.0.0.1:9090`, // 填写前一节中部署的 xtransit-server 地址
+  appId: 1, // 创建应用得到的应用 ID
+  appSecret: '*************', // 创建应用得到的应用 Secret
+
   // II. 比较重要的可选配置（不知道怎么配置的别传任何值，key 也别传，整个配置留空！！）
   disks: [], // 数组，每一项为配置需要监控的 disk 目录全路径
   errors: [], // 数组，每一项为配置需要监控的 error 日志文件全路径
