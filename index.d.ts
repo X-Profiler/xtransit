@@ -26,10 +26,8 @@ export interface XtransitConfig = {
 /**
  * Start xtransit.
  * @example
- * // without any config
- * xtransit.start(./config.js);
  * // set your own log dir
  * xprofiler.start({log_dir: '/path/to/your/logdir'});
  * @param config xtransit config.
  */
-export function start(config?: XtransitConfig): void;
+export function start(config: XtransitConfig): void;
