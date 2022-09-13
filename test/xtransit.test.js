@@ -171,3 +171,60 @@ describe('running xtransit', function() {
     }
   });
 });
+
+describe('running xtransit with customAgent', function() {
+  const port = 9092;
+  let xserver = null;
+  let xclient = null;
+  let customAgent = null;
+
+  async function startServer() {
+    xserver = cp.fork(transitServer, {
+      env: Object.assign({}, process.env, {
+        UNIT_TEST_TRANSIT_SERVER_PORT: port,
+        UNIT_TEST_TRANSIT_SERVER_RUNNING_TIME: 15000,
+      }),
+    });
+    // wait for server opened
+    await new Promise(resolve => xserver.on('message', msg => {
+      if (msg === 'opened') {
+        resolve();
+      } else {
+        const { data, expect } = msg;
+        if (expect && expect.ok) {
+          customAgent = data.agentId;
+        }
+      }
+    }));
+  }
+
+  before(async function() {
+    // start xserver
+    await startServer();
+
+    // start xtransit client
+    xclient = cp.fork(transitClient, {
+      env: Object.assign({}, process.env, {
+        UNIT_TEST_TRANSIT_CLIENT_SERVER: `ws://127.0.0.1:${port}`,
+        UNIT_TEST_TRANSIT_APP_ID: 1,
+        UNIT_TEST_TRANSIT_APP_SECRET: 'mock',
+        UNIT_TEST_TRANSIT_IP_MODE: 'YES',
+        UNIT_TEST_TRANSIT_CUSTOM_AGENT: 'YES',
+      }),
+    });
+
+    await sleep(5000);
+  });
+
+  after(async () => {
+    xserver.channel && xserver.send('shutdown');
+    xserver = null;
+    await sleep(2000);
+    xclient.channel && xclient.send('close');
+    xclient = null;
+  });
+
+  it('should use custom agentId.', function() {
+    expect(customAgent).to.be('mock-agent-id');
+  });
+});

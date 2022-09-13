@@ -10,7 +10,10 @@ const realpath = promisify(fs.realpath);
 const getNodeExe = require('../common/exe');
 
 const args = process.argv.slice(2);
-let pid, tid = 0, command, options;
+let pid,
+  tid = 0,
+  command,
+  options;
 if (args.length === 4) {
   [pid, tid, command, options] = args;
 } else {
