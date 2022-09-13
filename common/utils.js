@@ -13,7 +13,11 @@ exports.random = function(max, min = 0) {
   return Number(parseFloat(Math.random() * (max - min) + min).toFixed(2));
 };
 
-exports.getAgentId = function(ipMode) {
+exports.getAgentId = function(customAgent, ipMode) {
+  if (typeof customAgent === 'function') {
+    return customAgent();
+  }
+
   if (!ipMode) {
     return `${os.hostname()}`;
   }
