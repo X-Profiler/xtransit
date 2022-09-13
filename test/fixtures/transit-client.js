@@ -59,6 +59,9 @@ xtransit.start({
     console.log('[transit-client] wait for server lookup...');
     return await new Promise(resolve => setTimeout(() => resolve(server), 10));
   },
+  customAgent: process.env.UNIT_TEST_TRANSIT_CUSTOM_AGENT === 'YES' ? () => {
+    return 'mock-agent-id';
+  } : undefined,
 });
 
 function close() {
