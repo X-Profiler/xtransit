@@ -14,6 +14,7 @@ const exec = promisify(cp.exec);
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 const readdir = promisify(fs.readdir);
+const pMap = require('p-map');
 
 let logger;
 
@@ -36,6 +37,7 @@ let totalMemory = 0;
 
 // docker
 let isDocker = false;
+let filterProcessEnvName;
 
 async function initClkTck() {
   let clk_tck;
@@ -208,9 +210,28 @@ async function getAllUsedCpuFromProc() {
     if (files.length === 0) {
       return 0;
     }
-    const processes = files
-      .map(file => isNumber(file) && path.join(dir, file, 'stat'))
-      .filter(file => file);
+    const processes =
+      (await pMap(files, async file => {
+        try {
+          if (!isNumber(file)) {
+            return false;
+          }
+
+          if (isDocker && filterProcessEnvName) {
+            const env = await readFile(path.join(dir, file, 'environ'), 'utf8');
+            if (!env.includes(process.env[filterProcessEnvName])) {
+              return false;
+            }
+          }
+
+          return path.join(dir, file, 'stat');
+        } catch (err) {
+          err;
+          return false;
+        }
+
+      }, { concurrency: 10 }))
+        .filter(file => file);
 
     const cntr = processes.length;
     const tasks = [];
@@ -562,6 +583,7 @@ exports = module.exports = async function() {
 
 exports.init = async function() {
   logger = this.logger;
+  filterProcessEnvName = this.filterProcessEnvName;
 
   // init clk tck
   await initClkTck();
