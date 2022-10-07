@@ -7,6 +7,7 @@ const exists = promisify(fs.exists);
 const Parser = require('../common/error');
 
 const MAX_ERROR_COUNT = 50;
+const MAX_READABLE_SIZE = 10 * 1024 * 1024;
 
 const map = new Map();
 const parsers = new Map();
@@ -14,8 +15,10 @@ const parsers = new Map();
 let logger;
 
 function readFileAsStream(errorLog, start) {
+  const end = start + MAX_READABLE_SIZE;
   const readable = fs.createReadStream(errorLog, {
     start,
+    end,
     encoding: 'utf8',
   });
 
@@ -24,7 +27,12 @@ function readFileAsStream(errorLog, start) {
   });
 
   readable.on('end', function() {
-    map.set(errorLog, start);
+    if (start < end) {
+      map.set(errorLog, start);
+    } else {
+      const size = (fs.statSync(errorLog)).size;
+      map.set(errorLog, size);
+    }
   });
 
   const parser = parsers.get(errorLog);
@@ -95,4 +103,12 @@ exports.init = async function() {
 
 exports.interval = process.env.UNIT_TEST_TRANSIT_LOG_INTERVAL || 60;
 
+exports.readFileAsStream = readFileAsStream;
+
 exports.MAX_ERROR_COUNT = MAX_ERROR_COUNT;
+
+exports.MAX_READABLE_SIZE = MAX_READABLE_SIZE;
+
+exports.map = map;
+
+exports.parsers = parsers;
