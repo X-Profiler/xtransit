@@ -79,9 +79,9 @@ describe('parse error logs', function() {
     console.timeEnd(`append ${count} big error log`);
     console.time(`parse ${count} big error log`);
     logs = await readFileAsStream(tmpErrorPath, start);
-    console.log(`new error log size: ${bigError.length * 100}, readable limit: ${MAX_READABLE_SIZE} (error log ${bigError.length * 100 > MAX_READABLE_SIZE ? '>' : '<'} readable limit)`);
-    expect(logs.length).to.be(parseInt(MAX_READABLE_SIZE / bigError.length));
+    console.log(`new error log size: ${bigError.length * count}, readable limit: ${MAX_READABLE_SIZE} (error log ${bigError.length * 100 > MAX_READABLE_SIZE ? '>' : '<'} readable limit)`);
     console.timeEnd(`parse ${count} big error log`);
+    expect(logs.length).to.be(parseInt(MAX_READABLE_SIZE / bigError.length));
 
     // add 10 big log
     start = map.get(tmpErrorPath);
