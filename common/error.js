@@ -51,7 +51,7 @@ class Parser {
       }
     } else if (line === '') {
       if (this.current) {
-        this.current.extra + '\n';
+        this.current.extra += '\n';
       }
     } else {
       if (this.current) {
@@ -83,7 +83,7 @@ class Parser {
         reject(err);
       };
 
-      cleanup = function() {
+      cleanup = function () {
         readable.removeListener('data', onData);
         readable.removeListener('end', onEnd);
         readable.removeListener('error', onError);
