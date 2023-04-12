@@ -22,7 +22,7 @@ export interface XtransitConfig {
   titles?: string[], // 数组，如果应用使用了 process.title 自定义了名称，可以通过配置这里上报进程数据,
   cleanAfterUpload?: boolean, // 默认 false，如果设置为 true 则会在转储本地性能文件成功后删除本地的性能文件
   customAgent?: () => string, // 默认 undefined，如果设置则会使用此函数计算 agentId
-  filterProcessEnvName: string, // 默认 undefined，如果设置，则会在计算系统 CPU 占用时过滤对应 Env 的进程
+  filterProcessEnvName?: string, // 默认 undefined，如果设置，则会在计算系统 CPU 占用时过滤对应 Env 的进程
 }
 
 /**
