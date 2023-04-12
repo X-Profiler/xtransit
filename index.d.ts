@@ -17,12 +17,13 @@ export interface XtransitConfig {
   ipMode?: boolean, // 默认 false，此时仅使用 hostname 作为 agentId；设置为 true 后 agentId 组装形式为 ${ip}_${hostname} 
   libMode?: boolean, // 默认 false，此时采集如果收到 shutdown 事件会退出当前进程；如果是以第三方库的形式引用接入应用内，请将此属性设置为 true
   errexp?: RegExp, // 匹配错误日志起始的正则，默认为匹配到 YYYY-MM-DD HH:mm:ss 时间戳即认为是一条错误日志的起始 /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/i
-  logger?: string, // 可以传入应用日志句柄方便日志统一管理，注意需要实现 error, info, warn 和 debug 四个方法
+  logger?: any, // 可以传入应用日志句柄方便日志统一管理，注意需要实现 error, info, warn 和 debug 四个方法
   logLevel?: number, // 默认内置 logger 的日志级别，0 error，1 info，2 warning，3 debug,
   titles?: string[], // 数组，如果应用使用了 process.title 自定义了名称，可以通过配置这里上报进程数据,
   cleanAfterUpload?: boolean, // 默认 false，如果设置为 true 则会在转储本地性能文件成功后删除本地的性能文件
   customAgent?: () => string, // 默认 undefined，如果设置则会使用此函数计算 agentId
   filterProcessEnvName?: string, // 默认 undefined，如果设置，则会在计算系统 CPU 占用时过滤对应 Env 的进程
+  lookup?: (...param?: any[]) => string, // 默认 server，如果设置则会覆盖加工 server
 }
 
 /**
