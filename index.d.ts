@@ -23,7 +23,7 @@ export interface XtransitConfig {
   cleanAfterUpload?: boolean, // 默认 false，如果设置为 true 则会在转储本地性能文件成功后删除本地的性能文件
   customAgent?: () => string, // 默认 undefined，如果设置则会使用此函数计算 agentId
   filterProcessEnvName?: string, // 默认 undefined，如果设置，则会在计算系统 CPU 占用时过滤对应 Env 的进程
-  lookup?: (...param?: any[]) => string, // 默认 server，如果设置则会覆盖加工 server
+  lookup?: (...param: any[]) => string, // 默认 server，如果设置则会覆盖加工 server
 }
 
 /**
