@@ -2,7 +2,7 @@ export as namespace xtransit;
 
 export interface XtransitConfig {
   // I. 必须的配置（一定要写）
-  server: string, // 填写前一节中部署的 xtransit-server 地址 如：`ws://127.0.0.1:9090`
+  server: string, // 填写前一节中部署的 xtransit-server 地址 如：`ws://127.0.0.1:9190`
   appId: number, // 创建应用得到的应用 ID
   appSecret: string, // 创建应用得到的应用 Secret
 

@@ -35,7 +35,7 @@ function sendMessage(ws, command, expect, expired, options = {}) {
   }, expired);
 }
 
-const port = process.env.UNIT_TEST_TRANSIT_SERVER_PORT || 9090;
+const port = process.env.UNIT_TEST_TRANSIT_SERVER_PORT || 9190;
 
 const wss = new WebSocket.Server({ port }, () => {
   send('opened');
