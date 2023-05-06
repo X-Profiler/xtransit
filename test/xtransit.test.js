@@ -23,7 +23,7 @@ describe('running xtransit', function() {
   it('should throw if config.appId is null', function() {
     let error = null;
     try {
-      xtransit.start({ server: 'ws://127.0.0.1:9090' });
+      xtransit.start({ server: 'ws://127.0.0.1:9190' });
     } catch (err) {
       error = err.message;
     }
@@ -33,7 +33,7 @@ describe('running xtransit', function() {
   it('should throw if config.appSecret is null', function() {
     let error = null;
     try {
-      xtransit.start({ server: 'ws://127.0.0.1:9090', appId: 5 });
+      xtransit.start({ server: 'ws://127.0.0.1:9190', appId: 5 });
     } catch (err) {
       error = err.message;
     }
