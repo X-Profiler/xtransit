@@ -166,7 +166,7 @@ describe('running xtransit', function() {
 
       if (data.ok) {
         console.log(`[xtransit.test.js] command [${data.command}] override: ${expect.override}, stdout: <${data.data.stdout}>`);
-        expect.override === false && assert(!data.data.stdout.includes(`my ${data.command}.js`));
+        expect.override === false && assert(data.data.stdout.includes(`my ${data.command}.js`));
       }
     }
   });
