@@ -129,6 +129,11 @@ exports = module.exports = async function() {
     data: formatLogs(logs),
     lines: process.env.UNIT_TEST && logs[0] ? logs[0].split('\n').length : 0,
   };
+
+  if(typeof this.customXprofilerLogs === 'function') {
+    const logs = message.data.logs;
+    logs.push(...await this.customXprofilerLogs(logs));
+  }
   return message;
 };
 
