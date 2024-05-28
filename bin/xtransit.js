@@ -15,13 +15,13 @@ const appendFile = promisify(fs.appendFile);
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 // common libs
-const { checkAlive } = require('../common/utils');
+const { checkAlive, getXtransitPath, getXtransitLogPath } = require('../common/utils');
 const helpText = require('../common/helper');
 const getNodeExe = require('../common/exe');
 // global vars
 const SPLITTER = '\u0000';
 const guard = path.join(__dirname, 'main');
-const statusPath = path.join(os.homedir(), '.xtransit');
+const statusPath = getXtransitPath();
 
 const listHeader =
   '|- App ID -|- PID -|---- Start Time -----|--- Config Path ------------------------------------|';
@@ -103,7 +103,7 @@ async function start(configPath) {
   }
 
   const appId = cfg.appId;
-  const logPath = path.join(os.homedir(), '.xtransit.log');
+  const logPath = getXtransitLogPath();
   const out = await open(logPath, 'a');
   const err = await open(logPath, 'a');
   const nodeExe = await getNodeExe(process.pid, false);

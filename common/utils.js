@@ -4,6 +4,7 @@ const os = require('os');
 const address = require('address');
 const crypto = require('crypto');
 const { promisify } = require('util');
+const path = require('path');
 
 exports.regularWsServer = function(server) {
   return server.startsWith('ws://') || server.startsWith('wss://');
@@ -86,3 +87,18 @@ exports.getNodeProcessInfo = function(proc, platform) {
 };
 
 exports.sleep = promisify(setTimeout);
+
+exports.getXprofilerPath = function () {
+  const prefix = process.env.XPROFILER_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
+  return path.join(prefix, '.xprofiler');
+}
+
+exports.getXtransitPath = function () {
+  const prefix = process.env.XTRANSIT_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
+  return path.join(prefix, '.xtransit');
+}
+
+exports.getXtransitLogPath = function () {
+  const prefix = process.env.XTRANSIT_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
+  return path.join(prefix, '.xtransit.log');
+}
