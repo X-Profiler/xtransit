@@ -8,7 +8,7 @@ const cp = require('child_process');
 const exec = promisify(cp.exec);
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
-const { isNumber, checkAlive, sleep } = require('../common/utils');
+const { isNumber, checkAlive, sleep, getXprofilerPath } = require('../common/utils');
 const getNodeExe = require('../common/exe');
 const getCwd = require('../common/cwd');
 
@@ -50,7 +50,7 @@ async function checkStatus() {
   const processCwd = await getCwd(pid);
   await checkInstalled(nodeExe, processCwd);
 
-  const hiddenFile = path.join(os.homedir(), '.xprofiler');
+  const hiddenFile = getXprofilerPath();
   if (await exists(hiddenFile)) {
     const content = (await readFile(hiddenFile, { encoding: 'utf8' })).trim();
     for (const proc of content.split('\n')) {

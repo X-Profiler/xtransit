@@ -8,6 +8,7 @@ const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);
 const realpath = promisify(fs.realpath);
 const getNodeExe = require('../common/exe');
+const { getXprofilerPath } = require('../common/utils');
 
 const args = process.argv.slice(2);
 let pid,
@@ -21,7 +22,7 @@ if (args.length === 4) {
 }
 
 async function takeAction() {
-  const hiddenFile = path.join(os.homedir(), '.xprofiler');
+  const hiddenFile = getXprofilerPath();
   if (!await exists(hiddenFile)) {
     return console.error(`${hiddenFile} not exists`);
   }
