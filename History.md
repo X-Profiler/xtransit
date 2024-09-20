@@ -1,4 +1,11 @@
 
+2.6.0 / 2024-09-20
+==================
+
+**features**
+  * [[`3f2bb0d`](http://github.com/X-Profiler/xtransit/commit/3f2bb0db058087216c2bb4d21c00e63e4049acb7)] - feat: support config nodeExe (#54) (killa <<zhubin.gzb@antgroup.com>>)
+  * [[`9568f5f`](http://github.com/X-Profiler/xtransit/commit/9568f5f5019bba4618b84d822a8913b23ffaede9)] - feat: use uuid v9 (#53) (fengmk2 <<fengmk2@gmail.com>>)
+
 2.5.0 / 2024-06-05
 ==================
 
