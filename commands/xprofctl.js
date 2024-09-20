@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs');
-const os = require('os');
 const path = require('path');
 const { promisify } = require('util');
 const exists = promisify(fs.exists);
@@ -55,7 +54,7 @@ async function takeAction() {
     // hanle coredump
     if (command === 'generate_coredump') {
       data.type = 'core';
-      const nodepath = await realpath(await getNodeExe(process.pid, false));
+      const nodepath = process.env.XTRANSIT_NODE_EXE || await realpath(await getNodeExe(process.pid, false));
       data.executable_path = nodepath;
       data.node_version = process.versions.node;
       data.alinode_version = process.versions.alinode;

@@ -1,26 +1,27 @@
 'use strict';
 
+const path = require('path');
 const utils = require('../common/utils');
 const assert = require('assert');
 const mm = require('mm');
 const os = require('os');
 
-describe('utils.test.js', function () {
+describe('utils.test.js', function() {
   afterEach(mm.restore);
 
   describe('get xprofiler path', () => {
     it('should work with XPROFILER_PREFIX', () => {
       mm(process.env, 'XPROFILER_PREFIX', '/tmp');
       const p = utils.getXprofilerPath();
-      assert.equal(p, '/tmp/.xprofiler');
+      assert.equal(p, path.normalize('/tmp/.xprofiler'));
     });
 
     it('should work default is home', () => {
       mm(os, 'homedir', () => {
-        return '/home/xxx'
+        return '/home/xxx';
       });
       const p = utils.getXprofilerPath();
-      assert.equal(p, '/home/xxx/.xprofiler');
+      assert.equal(p, path.normalize('/home/xxx/.xprofiler'));
     });
   });
 
@@ -28,15 +29,15 @@ describe('utils.test.js', function () {
     it('should work with XTRANSIT_PREFIX', () => {
       mm(process.env, 'XTRANSIT_PREFIX', '/tmp');
       const p = utils.getXtransitPath();
-      assert.equal(p, '/tmp/.xtransit');
+      assert.equal(p, path.normalize('/tmp/.xtransit'));
     });
 
     it('should work default is home', () => {
       mm(os, 'homedir', () => {
-        return '/home/xxx'
+        return '/home/xxx';
       });
       const p = utils.getXtransitPath();
-      assert.equal(p, '/home/xxx/.xtransit');
+      assert.equal(p, path.normalize('/home/xxx/.xtransit'));
     });
   });
 
@@ -44,15 +45,15 @@ describe('utils.test.js', function () {
     it('should work with XTRANSIT_PREFIX', () => {
       mm(process.env, 'XTRANSIT_PREFIX', '/tmp');
       const p = utils.getXtransitLogPath();
-      assert.equal(p, '/tmp/.xtransit.log');
+      assert.equal(p, path.normalize('/tmp/.xtransit.log'));
     });
 
     it('should work default is home', () => {
       mm(os, 'homedir', () => {
-        return '/home/xxx'
+        return '/home/xxx';
       });
       const p = utils.getXtransitLogPath();
-      assert.equal(p, '/home/xxx/.xtransit.log');
+      assert.equal(p, path.normalize('/home/xxx/.xtransit.log'));
     });
   });
 });

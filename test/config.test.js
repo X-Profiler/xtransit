@@ -1,9 +1,13 @@
 'use strict';
 
+const cp = require('child_process');
 const os = require('os');
 const path = require('path');
+const { promisify } = require('util');
+const mm = require('mm');
 const expect = require('expect.js');
 const Agent = require('../lib/agent');
+const messageHandler = require('../lib/handler');
 
 function getError(config) {
   let error;
@@ -16,6 +20,8 @@ function getError(config) {
 }
 
 describe('get config', function() {
+  afterEach(mm.restore);
+
   it('should throw error', function() {
     expect(getError({})).to.be('config.server must be passed in!');
     expect(getError({ server: 'mock' })).to.be('config.server must be passed in!');
@@ -104,5 +110,62 @@ describe('get config', function() {
       logDir,
     });
     expect(agent.logdir).to.be(logDir);
+  });
+
+  it('shoule use config.nodeExe', async function() {
+    const logdir = path.resolve('/path/to/xprofiler');
+    const logLevel = 3;
+    const errexp = /Error: /;
+    const reconnectBaseTime = 30;
+    const heartbeatInterval = 30;
+    const docker = true;
+    const ipMode = true;
+    const libMode = true;
+    const cleanAfterUpload = true;
+    const disks = ['/', '/', '/test'];
+    const errors = ['/error.log', '/error.log', '/error.log'];
+    const packages = ['/package.json', '/package.json', '/package.json'];
+    const titles = ['mock-node'];
+    const agent = new Agent({
+      nodeExe: 'foo',
+      server: 'ws://127.0.0.1',
+      appId: 1,
+      appSecret: 'test',
+      logdir,
+      logLevel,
+      errexp,
+      reconnectBaseTime,
+      heartbeatInterval,
+      docker,
+      ipMode,
+      libMode,
+      cleanAfterUpload,
+      disks,
+      errors,
+      packages,
+      titles,
+    });
+    let execOptions;
+    let exeFile;
+    mm(cp, 'execFile', (file, args, options, cb) => {
+      execOptions = options;
+      exeFile = file;
+      cb(null, {
+        stdout: 'succeed',
+        stderr: null,
+      });
+    });
+    const execFile = promisify(cp.execFile);
+    await messageHandler.call(agent, JSON.stringify({
+      traceId: 'mock_trace_id',
+      type: 'exec_command',
+      data: {
+        command: 'check_process_status 2',
+      },
+    }), {
+      execFile,
+    });
+    expect(exeFile).to.be('foo');
+    expect(execOptions.env.XTRANSIT_NODE_EXE).to.be('foo');
   });
 });
