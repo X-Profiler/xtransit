@@ -88,17 +88,17 @@ exports.getNodeProcessInfo = function(proc, platform) {
 
 exports.sleep = promisify(setTimeout);
 
-exports.getXprofilerPath = function () {
+exports.getXprofilerPath = function() {
   const prefix = process.env.XPROFILER_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
   return path.join(prefix, '.xprofiler');
-}
+};
 
-exports.getXtransitPath = function () {
+exports.getXtransitPath = function() {
   const prefix = process.env.XTRANSIT_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
   return path.join(prefix, '.xtransit');
-}
+};
 
-exports.getXtransitLogPath = function () {
+exports.getXtransitLogPath = function() {
   const prefix = process.env.XTRANSIT_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
   return path.join(prefix, '.xtransit.log');
-}
+};

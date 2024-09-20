@@ -5,7 +5,7 @@ const assert = require('assert');
 const mm = require('mm');
 const os = require('os');
 
-describe('utils.test.js', function () {
+describe('utils.test.js', function() {
   afterEach(mm.restore);
 
   describe('get xprofiler path', () => {
@@ -17,7 +17,7 @@ describe('utils.test.js', function () {
 
     it('should work default is home', () => {
       mm(os, 'homedir', () => {
-        return '/home/xxx'
+        return '/home/xxx';
       });
       const p = utils.getXprofilerPath();
       assert.equal(p, '/home/xxx/.xprofiler');
@@ -33,7 +33,7 @@ describe('utils.test.js', function () {
 
     it('should work default is home', () => {
       mm(os, 'homedir', () => {
-        return '/home/xxx'
+        return '/home/xxx';
       });
       const p = utils.getXtransitPath();
       assert.equal(p, '/home/xxx/.xtransit');
@@ -49,7 +49,7 @@ describe('utils.test.js', function () {
 
     it('should work default is home', () => {
       mm(os, 'homedir', () => {
-        return '/home/xxx'
+        return '/home/xxx';
       });
       const p = utils.getXtransitLogPath();
       assert.equal(p, '/home/xxx/.xtransit.log');

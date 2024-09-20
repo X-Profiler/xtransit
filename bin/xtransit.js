@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');

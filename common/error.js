@@ -83,7 +83,7 @@ class Parser {
         reject(err);
       };
 
-      cleanup = function () {
+      cleanup = function() {
         readable.removeListener('data', onData);
         readable.removeListener('end', onEnd);
         readable.removeListener('error', onError);

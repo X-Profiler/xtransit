@@ -20,6 +20,8 @@ function getError(config) {
 }
 
 describe('get config', function() {
+  afterEach(mm.restore);
+
   it('should throw error', function() {
     expect(getError({})).to.be('config.server must be passed in!');
     expect(getError({ server: 'mock' })).to.be('config.server must be passed in!');
