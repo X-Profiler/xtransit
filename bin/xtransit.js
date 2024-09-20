@@ -106,7 +106,7 @@ async function start(configPath) {
   const logPath = getXtransitLogPath();
   const out = await open(logPath, 'a');
   const err = await open(logPath, 'a');
-  const nodeExe = await getNodeExe(process.pid, false);
+  const nodeExe = cfg.nodeExe || await getNodeExe(process.pid, false);
   const proc = cp.spawn(nodeExe, [guard, configPath], {
     detached: true,
     stdio: ['ipc', out, err],
