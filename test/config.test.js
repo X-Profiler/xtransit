@@ -20,7 +20,10 @@ function getError(config) {
 }
 
 describe('get config', function() {
-  afterEach(mm.restore);
+  afterEach(() => {
+    mm.restore();
+    delete process.env.XTRANSIT_NODE_EXE;
+  });
 
   it('should throw error', function() {
     expect(getError({})).to.be('config.server must be passed in!');
