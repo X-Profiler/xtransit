@@ -1,4 +1,10 @@
 
+2.6.2 / 2024-09-21
+==================
+
+**others**
+  * [[`3f3b246`](http://github.com/X-Profiler/xtransit/commit/3f3b246ffe9494eaa73eb1e91f72fd1729c392eb)] - chore: use XTRANSIT_NODE_EXE to get exe (#55) (killa <<zhubin.gzb@antgroup.com>>)
+
 2.6.0 / 2024-09-20
 ==================
 
