@@ -11,6 +11,9 @@ const utils = require('../common/utils');
 const platform = os.platform();
 
 module.exports = async (pid, stringify = true) => {
+  if (process.env.XTRANSIT_NODE_EXE) {
+    return process.env.XTRANSIT_NODE_EXE;
+  }
   let nodeExe = 'node';
 
   /* istanbul ignore next */
