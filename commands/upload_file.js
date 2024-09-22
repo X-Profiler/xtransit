@@ -7,6 +7,7 @@ const qs = require('querystring');
 const FormData = require('form-data');
 const urllib = require('urllib');
 const { promisify } = require('util');
+const crypto = require('crypto');
 const exists = promisify(fs.exists);
 const stat = promisify(fs.stat);
 const unlink = promisify(fs.unlink);
@@ -19,7 +20,9 @@ const cleanAfterUpload = process.env.XTRANSIT_CLEAN_AFTER_UPLOAD;
 console.warn = function() { };
 
 async function gzipFile(filePath) {
-  const gzippedFile = path.join(path.dirname(filePath), `${path.basename(filePath)}.gz`);
+  // 避免文件同名，对原路径取 md5 哈希作为新文件名
+  const pathHash = crypto.createHash('md5').update(filePath).digest('hex');
+  const gzippedFile = path.join(utils.getXtransitPath(), `${path.basename(filePath)}-${pathHash}.gz`);
   if (await exists(gzippedFile)) {
     return gzippedFile;
   }
