@@ -89,7 +89,7 @@ exports.getNodeProcessInfo = function(proc, platform) {
 exports.sleep = promisify(setTimeout);
 
 exports.getXtransitPrefix = function() {
-  return process.env.XPROFILER_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
+  return process.env.XTRANSIT_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
 };
 
 exports.getXprofilePrefix = function() {
