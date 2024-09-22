@@ -1,4 +1,10 @@
 
+2.6.4 / 2024-09-22
+==================
+
+**fixes**
+  * [[`5eb1958`](http://github.com/X-Profiler/xtransit/commit/5eb1958725a69763a012f75e47b1b64dd64e23f5)] - fix: gzip files to xtransit prefix (#57) (killa <<zhubin.gzb@antgroup.com>>)
+
 2.6.3 / 2024-09-22
 ==================
 
