@@ -1,4 +1,10 @@
 
+2.6.3 / 2024-09-22
+==================
+
+**others**
+  * [[`cc4f24c`](http://github.com/X-Profiler/xtransit/commit/cc4f24c3abfa8a84243057d26cfcc76ebe62438e)] - chore: gzip file to xtransit dir (#56) (killa <<zhubin.gzb@antgroup.com>>)
+
 2.6.2 / 2024-09-21
 ==================
 
