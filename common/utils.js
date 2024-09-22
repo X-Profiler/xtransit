@@ -92,8 +92,12 @@ exports.getXtransitPrefix = function() {
   return process.env.XPROFILER_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
 };
 
+exports.getXprofilePrefix = function() {
+  return process.env.XPROFILER_PREFIX || process.env.XPROFILER_UNIT_TEST_TMP_HOMEDIR || os.homedir();
+};
+
 exports.getXprofilerPath = function() {
-  const prefix = exports.getXtransitPrefix();
+  const prefix = exports.getXprofilePrefix();
   return path.join(prefix, '.xprofiler');
 };
 
