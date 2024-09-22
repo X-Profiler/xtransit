@@ -22,7 +22,7 @@ console.warn = function() { };
 async function gzipFile(filePath) {
   // 避免文件同名，对原路径取 md5 哈希作为新文件名
   const pathHash = crypto.createHash('md5').update(filePath).digest('hex');
-  const gzippedFile = path.join(utils.getXtransitPath(), `${path.basename(filePath)}-${pathHash}.gz`);
+  const gzippedFile = path.join(utils.getXtransitPrefix(), `${path.basename(filePath)}-${pathHash}.gz`);
   if (await exists(gzippedFile)) {
     return gzippedFile;
   }
