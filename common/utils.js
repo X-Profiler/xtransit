@@ -9,6 +9,13 @@ exports.getIp = function getIp() {
   const interfaces = os.networkInterfaces();
   for (const interfaceItems of Object.values(interfaces)) {
     for (const item of interfaceItems) {
+      // skip local network ip
+      if (item.address.startsWith('10.') ||
+          item.address.startsWith('172.16.') ||
+          item.address.startsWith('192.168.') ||
+          item.address.startsWith('169.254.')) {
+        continue;
+      }
       if (item.family === 'IPv4' && !item.internal) {
         return item.address;
       }
