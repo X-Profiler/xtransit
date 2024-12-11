@@ -1,28 +1,10 @@
 'use strict';
 
 const os = require('os');
+const address = require('address');
 const crypto = require('crypto');
 const { promisify } = require('util');
 const path = require('path');
-
-exports.getIp = function getIp() {
-  const interfaces = os.networkInterfaces();
-  for (const interfaceItems of Object.values(interfaces)) {
-    for (const item of interfaceItems) {
-      // skip local network ip
-      if (item.address.startsWith('10.') ||
-          item.address.startsWith('172.16.') ||
-          item.address.startsWith('192.168.') ||
-          item.address.startsWith('169.254.')) {
-        continue;
-      }
-      if (item.family === 'IPv4' && !item.internal) {
-        return item.address;
-      }
-    }
-  }
-  return '127.0.0.1';
-};
 
 exports.regularWsServer = function(server) {
   return server.startsWith('ws://') || server.startsWith('wss://');
@@ -40,7 +22,7 @@ exports.getAgentId = function(customAgent, ipMode) {
   if (!ipMode) {
     return `${os.hostname()}`;
   }
-  return `${exports.getIp()}::${os.hostname()}`;
+  return `${address.ip()}::${os.hostname()}`;
 };
 
 exports.sign = function(message, secret) {
