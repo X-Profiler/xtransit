@@ -7,6 +7,8 @@ module.exports = {
     'test',
   ],
   dep: [
+    'address',
+    'formstream',
     'moment',
     'nounou',
     'p-map',
