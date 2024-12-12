@@ -1,4 +1,16 @@
 
+3.0.0 / 2024-12-12
+==================
+
+**features**
+  * [[`995f992`](http://github.com/X-Profiler/xtransit/commit/995f992d7cb8c25e991ad2f797cdb2a15eb64dd2)] - feat: rollback for removing third-party dependencies (#61) (易容 (hyj1991) <<yeekwanvong@gmail.com>>)
+  * [[`5e159a2`](http://github.com/X-Profiler/xtransit/commit/5e159a2976ca72050a2e4274c80638c0af1a9700)] - feat: remove formstream (#60) (易容 (hyj1991) <<yeekwanvong@gmail.com>>)
+  * [[`2a4bf4f`](http://github.com/X-Profiler/xtransit/commit/2a4bf4fbd1e95f32ccdb20158fb1863266d4cd85)] - feat: remove address (#59) (易容 (hyj1991) <<yeekwanvong@gmail.com>>)
+
+**others**
+  * [[`c723147`](http://github.com/X-Profiler/xtransit/commit/c723147937a2a61e3fe97df0751c4b49a4b852d7)] - chore: upgrade deps to latest (#62) (killa <<zhubin.gzb@antgroup.com>>)
+  * [[`0e873ec`](http://github.com/X-Profiler/xtransit/commit/0e873ec452daff183c91f3f43140ba4314e67873)] - chore: upgrade urllib to 4.x (#58) (killa <<zhubin.gzb@antgroup.com>>)
+
 2.6.4 / 2024-09-22
 ==================
 
