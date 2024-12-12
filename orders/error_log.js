@@ -1,7 +1,7 @@
 'use strict';
 
-const fs = require('fs');
-const { promisify } = require('util');
+const fs = require('node:fs');
+const { promisify } = require('node:util');
 const stat = promisify(fs.stat);
 const exists = promisify(fs.exists);
 const Parser = require('../common/error');

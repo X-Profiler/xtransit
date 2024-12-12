@@ -1,7 +1,7 @@
 'use strict';
 
-const fs = require('fs');
-const { promisify } = require('util');
+const fs = require('node:fs');
+const { promisify } = require('node:util');
 const exists = promisify(fs.exists);
 
 const filePath = process.argv[2];

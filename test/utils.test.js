@@ -1,10 +1,10 @@
 'use strict';
 
-const path = require('path');
+const path = require('node:path');
 const utils = require('../common/utils');
-const assert = require('assert');
+const assert = require('node:assert');
 const mm = require('mm');
-const os = require('os');
+const os = require('node:os');
 
 describe('utils.test.js', function() {
   afterEach(mm.restore);

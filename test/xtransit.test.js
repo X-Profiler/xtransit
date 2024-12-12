@@ -1,11 +1,11 @@
 'use strict';
 
-const cp = require('child_process');
-const path = require('path');
+const cp = require('node:child_process');
+const path = require('node:path');
 const expect = require('expect.js');
 const xtransit = require('../xtransit');
 const { sleep } = require('../common/utils');
-const assert = require('assert');
+const assert = require('node:assert');
 const transitServer = path.join(__dirname, 'fixtures/transit-server.js');
 const transitClient = path.join(__dirname, 'fixtures/transit-client.js');
 

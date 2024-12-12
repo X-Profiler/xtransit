@@ -1,9 +1,9 @@
 'use strict';
 
-const cp = require('child_process');
-const os = require('os');
-const path = require('path');
-const { promisify } = require('util');
+const cp = require('node:child_process');
+const os = require('node:os');
+const path = require('node:path');
+const { promisify } = require('node:util');
 const mm = require('mm');
 const expect = require('expect.js');
 const Agent = require('../lib/agent');
