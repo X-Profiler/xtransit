@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const moment = require('moment');
-const cp = require('child_process');
+const cp = require('node:child_process');
 // promisify
-const { promisify } = require('util');
+const { promisify } = require('node:util');
 const exists = promisify(fs.exists);
 const open = promisify(fs.open);
 const close = promisify(fs.close);

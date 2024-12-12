@@ -1,10 +1,10 @@
 'use strict';
 
-const os = require('os');
+const os = require('node:os');
 const address = require('address');
-const crypto = require('crypto');
-const { promisify } = require('util');
-const path = require('path');
+const crypto = require('node:crypto');
+const { promisify } = require('node:util');
+const path = require('node:path');
 
 exports.regularWsServer = function(server) {
   return server.startsWith('ws://') || server.startsWith('wss://');

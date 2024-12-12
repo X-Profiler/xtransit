@@ -1,8 +1,8 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const { promisify } = require('util');
+const fs = require('node:fs');
+const path = require('node:path');
+const { promisify } = require('node:util');
 const pMap = require('p-map');
 const moment = require('moment');
 const exists = promisify(fs.exists);

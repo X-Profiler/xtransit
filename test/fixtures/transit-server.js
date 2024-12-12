@@ -2,7 +2,7 @@
 
 const { v4 } = require('uuid');
 const WebSocket = require('ws');
-const EventEmitter = require('events').EventEmitter;
+const EventEmitter = require('node:events').EventEmitter;
 const commandEvent = new EventEmitter();
 const codes = { notExists: 'NOT_EXISIS' };
 

@@ -1,10 +1,10 @@
 'use strict';
 
 const results = {};
-const cp = require('child_process');
-const { promisify } = require('util');
+const cp = require('node:child_process');
+const { promisify } = require('node:util');
 const exec = promisify(cp.exec);
-const os = require('os');
+const os = require('node:os');
 
 async function getOsInfo() {
   // node version

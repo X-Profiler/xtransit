@@ -1,15 +1,15 @@
 /* istanbul ignore file */
 'use strict';
 
-const os = require('os');
-const fs = require('fs');
-const path = require('path');
-const cp = require('child_process');
+const os = require('node:os');
+const fs = require('node:fs');
+const path = require('node:path');
+const cp = require('node:child_process');
 const moment = require('moment');
 const { isNumber } = require('../common/utils');
 const getNodeExe = require('../common/exe');
 const pkg = require('../package.json');
-const { promisify } = require('util');
+const { promisify } = require('node:util');
 const exec = promisify(cp.exec);
 const exists = promisify(fs.exists);
 const readFile = promisify(fs.readFile);

@@ -1,7 +1,7 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const expect = require('expect.js');
 const ErrorParser = require('../common/error');
 const errorFilePath = path.join(__dirname, './fixtures/files/error');

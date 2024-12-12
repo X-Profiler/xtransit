@@ -1,6 +1,6 @@
 'use strict';
 
-const path = require('path');
+const path = require('node:path');
 const nounou = require('nounou');
 const clientPath = path.join(__dirname, './client.js');
 const argv = process.argv.slice(2);

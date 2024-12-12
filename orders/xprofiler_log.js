@@ -1,10 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 const through = require('through2');
 const split = require('split2');
-const { promisify } = require('util');
+const { promisify } = require('node:util');
 const exists = promisify(fs.exists);
 const stat = promisify(fs.stat);
 const moment = require('moment');

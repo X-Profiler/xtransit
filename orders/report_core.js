@@ -1,11 +1,11 @@
 /* istanbul ignore file */
 'use strict';
 
-const os = require('os');
-const fs = require('fs');
-const cp = require('child_process');
-const path = require('path');
-const { promisify } = require('util');
+const os = require('node:os');
+const fs = require('node:fs');
+const cp = require('node:child_process');
+const path = require('node:path');
+const { promisify } = require('node:util');
 const getNodeExe = require('../common/exe');
 const exec = promisify(cp.exec);
 const exists = promisify(fs.exists);

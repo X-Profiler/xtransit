@@ -1,8 +1,8 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const { promisify } = require('util');
+const fs = require('node:fs');
+const path = require('node:path');
+const { promisify } = require('node:util');
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
 const writeFile = promisify(fs.writeFile);

@@ -1,8 +1,8 @@
 'use strict';
 
-const os = require('os');
-const cp = require('child_process');
-const { promisify } = require('util');
+const os = require('node:os');
+const cp = require('node:child_process');
+const { promisify } = require('node:util');
 const exec = promisify(cp.exec);
 const { getNodeProcessInfo, isNumber, checkAlive } = require('../common/utils');
 

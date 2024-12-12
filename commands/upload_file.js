@@ -1,13 +1,13 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const zlib = require('zlib');
-const qs = require('querystring');
+const fs = require('node:fs');
+const path = require('node:path');
+const zlib = require('node:zlib');
+const qs = require('node:querystring');
 const FormData = require('form-data');
 const urllib = require('urllib');
-const { promisify } = require('util');
-const crypto = require('crypto');
+const { promisify } = require('node:util');
+const crypto = require('node:crypto');
 const exists = promisify(fs.exists);
 const stat = promisify(fs.stat);
 const unlink = promisify(fs.unlink);

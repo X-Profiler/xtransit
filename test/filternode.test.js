@@ -1,8 +1,8 @@
 'use strict';
 
-const path = require('path');
-const cp = require('child_process');
-const { promisify } = require('util');
+const path = require('node:path');
+const cp = require('node:child_process');
+const { promisify } = require('node:util');
 const exec = promisify(cp.exec);
 const expect = require('expect.js');
 const { sleep } = require('../common/utils');

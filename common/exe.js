@@ -1,10 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const { promisify } = require('util');
-const os = require('os');
-const cp = require('child_process');
-const path = require('path');
+const fs = require('node:fs');
+const { promisify } = require('node:util');
+const os = require('node:os');
+const cp = require('node:child_process');
+const path = require('node:path');
 const exec = promisify(cp.exec);
 const exists = promisify(fs.exists);
 const utils = require('../common/utils');
