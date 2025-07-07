@@ -1,4 +1,10 @@
 
+3.0.1 / 2025-07-07
+==================
+
+**fixes**
+  * [[`e9dca38`](http://github.com/X-Profiler/xtransit/commit/e9dca38c307186b6f2f322fced2b99f00d0180a1)] - fix: set formData to content instead of stream on urllib@4 (#63) (fengmk2 <<fengmk2@gmail.com>>)
+
 3.0.0 / 2024-12-12
 ==================
 
