@@ -38,21 +38,16 @@ async function gzipFile(filePath) {
   });
 }
 
-function request(url, opts) {
-  return new Promise((resolve, reject) => {
-    urllib.request(url, opts, function(err, data, res) {
-      if (err) {
-        return reject(err);
-      }
-      if (res.statusCode !== 200) {
-        return reject(new Error(`response failed with status code: ${res.statusCode}, data: ${JSON.stringify(data)}`));
-      }
-      if (!data.ok) {
-        return reject(new Error(`transfer falied: ${data.message}`));
-      }
-      resolve(data.data);
-    });
-  });
+async function request(url, opts) {
+  const result = await urllib.request(url, opts);
+  const data = result.data;
+  if (result.statusCode !== 200) {
+    throw new Error(`response failed with status code: ${result.statusCode}, data: ${JSON.stringify(data)}`);
+  }
+  if (!data.ok) {
+    throw new Error(`transfer falied: ${data.message}`);
+  }
+  return data.data;
 }
 
 async function removeExists(files) {
@@ -109,7 +104,7 @@ async function uploadFile() {
     type: 'POST',
     timeout: process.env.XTRANSIT_EXPIRED_TIME || 20 * 60 * 1000,
     headers: formdata.getHeaders(),
-    stream: formdata,
+    content: formdata,
   };
 
   const result = await request(url, opts);
