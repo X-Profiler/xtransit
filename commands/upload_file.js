@@ -45,7 +45,7 @@ async function request(url, opts) {
     throw new Error(`response failed with status code: ${result.statusCode}, data: ${JSON.stringify(data)}`);
   }
   if (!data.ok) {
-    throw new Error(`transfer falied: ${data.message}`);
+    throw new Error(`transfer failed: ${data.message}`);
   }
   return data.data;
 }
