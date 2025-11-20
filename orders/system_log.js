@@ -488,7 +488,7 @@ async function getLoadAvg() {
   return os.loadavg();
 }
 
-async function getDiskUsage(disks) {
+async function getDiskUsage(disks, ignoredFileSystems) {
   if (isWindows) {
     return {};
   }
@@ -502,7 +502,8 @@ async function getDiskUsage(disks) {
     existsDisks.push(disk);
   }
   const params = existsDisks.length ? ` ${existsDisks.join(' ')}` : '';
-  const command = `df -P${params}`;
+  const xfs = ignoredFileSystems.length ? ` ${ignoredFileSystems.map(fs => `-x ${fs}`).join(' ')}` : '';
+  const command = `df -P${xfs}${params}`;
 
   logger.debug(`[system_log] get disks info: ${command}`);
   const { stdout } = await exec(command);
@@ -560,7 +561,7 @@ exports = module.exports = async function() {
   tasks.push(getCpuUsage());
   tasks.push(getFreeMemory());
   tasks.push(getLoadAvg());
-  tasks.push(getDiskUsage(this.disks));
+  tasks.push(getDiskUsage(this.disks, this.ignoredFileSystems));
   tasks.push(getNodeCount(this.titles));
 
   const [
