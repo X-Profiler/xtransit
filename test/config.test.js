@@ -51,6 +51,8 @@ describe('get config', function() {
     expect(agent.packages.length).to.be(0);
     expect(Array.isArray(agent.titles)).to.be(true);
     expect(agent.titles.length).to.be(0);
+    expect(Array.isArray(agent.ignoredFileSystems)).to.be(true);
+    expect(agent.ignoredFileSystems.length).to.be(0);
   });
 
   it('shoule merge user config', function() {
@@ -67,6 +69,7 @@ describe('get config', function() {
     const errors = ['/error.log', '/error.log', '/error.log'];
     const packages = ['/package.json', '/package.json', '/package.json'];
     const titles = ['mock-node'];
+    const ignoredFileSystems = ['tmpfs', 'tmpfs', 'devtmpfs'];
     const agent = new Agent({
       server: 'ws://127.0.0.1',
       appId: 1,
@@ -84,6 +87,7 @@ describe('get config', function() {
       errors,
       packages,
       titles,
+      ignoredFileSystems,
     });
     expect(agent.logdir).to.be(logdir);
     expect(agent.logLevel).to.be(logLevel);
@@ -102,6 +106,8 @@ describe('get config', function() {
     expect(agent.packages.length).to.be(Array.from(new Set(packages)).length);
     expect(Array.isArray(agent.titles)).to.be(true);
     expect(agent.titles.length).to.be(Array.from(new Set(titles)).length);
+    expect(Array.isArray(agent.ignoredFileSystems)).to.be(true);
+    expect(agent.ignoredFileSystems.length).to.be(Array.from(new Set(ignoredFileSystems)).length);
   });
 
   it('should config logDir', function() {
@@ -129,6 +135,7 @@ describe('get config', function() {
     const errors = ['/error.log', '/error.log', '/error.log'];
     const packages = ['/package.json', '/package.json', '/package.json'];
     const titles = ['mock-node'];
+    const ignoredFileSystems = ['tmpfs', 'tmpfs', 'devtmpfs'];
     const agent = new Agent({
       nodeExe: 'foo',
       server: 'ws://127.0.0.1',
@@ -147,6 +154,7 @@ describe('get config', function() {
       errors,
       packages,
       titles,
+      ignoredFileSystems,
     });
     let execOptions;
     let exeFile;
