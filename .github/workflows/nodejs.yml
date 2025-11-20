@@ -12,7 +12,7 @@ jobs:
       matrix:
         # use windows-2022, avoid error: 'wmic' is not recognized as an internal or external command
         os: [ ubuntu-latest, macos-latest, windows-2022 ]
-        node-version: [ 16, 18, 20, 22 ]
+        node-version: [ 16, 18, 20, 22, 24 ]
     steps:
     - name: Checkout Git Source
       uses: actions/checkout@master
