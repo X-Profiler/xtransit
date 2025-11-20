@@ -11,3 +11,9 @@ The agent that can collect or transfer xprofiler's performance logs.
 ## I. License
 
 [BSD-2-Clause](LICENSE)
+
+## Contributors
+
+[![Contributors](https://contrib.rocks/image?repo=X-Profiler/xtransit)](https://github.com/X-Profiler/xtransit/graphs/contributors)
+
+Made with [contributors-img](https://contrib.rocks).
