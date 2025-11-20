@@ -13,9 +13,7 @@
     "test-single": "mocha -t 0 -R spec",
     "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -R spec test/*.test.js  --timeout 0",
     "cov-single": "nyc --reporter=html --reporter=text --reporter=lcov mocha --timeout 0 -R spec",
-    "ci": "npm run lint && npm run cov",
-    "release": "node scripts/release.js",
-    "autod": "autod"
+    "ci": "npm run lint && npm run cov"
   },
   "repository": {
     "type": "git",
@@ -54,7 +52,6 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "autod": "^3.1.0",
     "eslint": "^8.57.1",
     "eslint-config-egg": "^14.0.0",
     "expect.js": "^0.3.1",
