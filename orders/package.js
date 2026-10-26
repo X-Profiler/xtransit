@@ -26,8 +26,23 @@ async function readPackage(pkgfile) {
     /* istanbul ignore else */
     if (await exists(lockfile)) {
       data.lock = (await readFile(lockfile, 'utf8')).trim();
+      data.lockType = 'package-lock';
     } else if (await exists(path.join(projectDir, 'yarn.lock'))) {
       data.lock = yarnToNpm(projectDir).trim();
+      data.lockType = 'yarn';
+    } else {
+      for (let directory = projectDir; directory; directory = path.dirname(directory)) {
+        const pnpmLockfile = path.join(directory, 'pnpm-lock.yaml');
+        if (await exists(pnpmLockfile) && (directory === projectDir || await exists(path.join(directory, 'pnpm-workspace.yaml')))) {
+          data.lock = (await readFile(pnpmLockfile, 'utf8')).trim();
+          data.lockType = 'pnpm';
+          data.lockImporter = path.relative(directory, projectDir).split(path.sep).join('/') || '.';
+          break;
+        }
+        if (path.dirname(directory) === directory) {
+          break;
+        }
+      }
     }
 
     return data;
